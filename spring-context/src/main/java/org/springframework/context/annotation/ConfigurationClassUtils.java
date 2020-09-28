@@ -46,10 +46,13 @@ import java.util.Set;
  */
 abstract class ConfigurationClassUtils {
 
+	// 完全
 	private static final String CONFIGURATION_CLASS_FULL = "full";
 
+	// 类似
 	private static final String CONFIGURATION_CLASS_LITE = "lite";
 
+	// className + "." + attributeName
 	private static final String CONFIGURATION_CLASS_ATTRIBUTE =
 			Conventions.getQualifiedAttributeName(ConfigurationClassPostProcessor.class, "configurationClass");
 
@@ -115,6 +118,7 @@ abstract class ConfigurationClassUtils {
 		if (isFullConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
+		// lite: 类似
 		else if (isLiteConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}
@@ -123,11 +127,12 @@ abstract class ConfigurationClassUtils {
 		}
 
 		// It's a full or lite configuration candidate... Let's determine the order value, if any.
+		// 获取排序优先级信息
 		Integer order = getOrder(metadata);
 		if (order != null) {
+			// 设置bean定义的优先级
 			beanDef.setAttribute(ORDER_ATTRIBUTE, order);
 		}
-
 		return true;
 	}
 
@@ -169,12 +174,15 @@ abstract class ConfigurationClassUtils {
 	 */
 	public static boolean isLiteConfigurationCandidate(AnnotationMetadata metadata) {
 		// Do not consider an interface or an annotation...
-		// 如果当前的
+		// 如果当前的bean定义指定的class是否为一个接口.
 		if (metadata.isInterface()) {
 			return false;
 		}
 
 		// Any of the typical annotations found?
+
+		// 如果带有：@Component @ComponentScan @Import @ImportResource注解，则表示是一种类似于配置类的候选配置
+		//   lite: 类似
 		for (String indicator : candidateIndicators) {
 			if (metadata.isAnnotated(indicator)) {
 				return true;
@@ -215,6 +223,8 @@ abstract class ConfigurationClassUtils {
 	 * @return the {@code @Order} annotation value on the configuration class,
 	 * or {@code Ordered.LOWEST_PRECEDENCE} if none declared
 	 * @since 5.0
+	 *
+	 * 获取bean定义的优先级信息
 	 */
 	@Nullable
 	public static Integer getOrder(AnnotationMetadata metadata) {

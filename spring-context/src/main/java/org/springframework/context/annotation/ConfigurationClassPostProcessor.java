@@ -215,6 +215,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 					"postProcessBeanFactory already called on this post-processor against " + registry);
 		}
 		this.registriesPostProcessed.add(registryId);
+
 		// 解析配置类中的Bean定义.
 		processConfigBeanDefinitions(registry);
 	}
@@ -258,7 +259,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 					logger.debug("Bean definition has already been processed as a configuration class: " + beanDef);
 				}
 			}
-			// 校验当前的bean定义是否为一个候选的配置类，检查逻辑大概是判断类上是否标注了@Configuration注解或者是否存在标注了@Bean的方法
+			// 校验当前的bean定义是否为一个候选的配置类，检查逻辑是判断类上是否标注了@Configuration注解或者是否存在标注了@Bean的方法
 			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
 				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
 			}
@@ -268,6 +269,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		if (configCandidates.isEmpty()) {
 			return;
 		}
+
 		// Sort by previously determined @Order value, if applicable
 		// 对配置类进行排序，配置类的顺序可以通过配置类上的@Order注解来进行指定.
 		configCandidates.sort((bd1, bd2) -> {

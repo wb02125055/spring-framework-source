@@ -540,12 +540,15 @@ public abstract class AbstractApplicationContext
 			 * 比如：创建bean工厂时，需要忽略哪些接口，需要注册哪些bean，需要设置哪些Bean的后置处理器等.
 			 *
 			 * 例如常用的：ApplicationContextAwareBeanPostProcessor, ApplicationListenerDetector
+			 *
+			 * 此外，注册一些和环境相关的bean单实例bean.
 			 */
 			prepareBeanFactory(beanFactory);
 
 			try {
 				/**
 				 * 4.Bean定义加载完毕之后实现，目前方法为空实现，留给开发人员进行自定义扩展。
+				 * 	  和BeanFactoryPostProcessor中的方法postProcessBeanFactory相同
 				 *
 				 * 该方法在Bean定义加载完毕之后，Bean实例化之前会执行
 				 * 比如在BeanFactory加载完所有的Bean定义之后，想要修改某个bean的定义信息，可以通过重写这个方法实现.
@@ -754,8 +757,10 @@ public abstract class AbstractApplicationContext
 	protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		// Tell the internal bean factory to use the context's class loader etc.
 		beanFactory.setBeanClassLoader(getClassLoader());
-		// 设置bean标签的解析器
+
+		// 设置SPEL表达式解析器，用来支持Spring的SPEL表达式
 		beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
+
 		// <property ref="xxx" /> 解析转换xxx为对象
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
@@ -798,7 +803,8 @@ public abstract class AbstractApplicationContext
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(this));
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found.
-		// 如果bean工厂中存在着名称为loadTimeWeaver的bean定义，则给bean工厂中加入LoaderTimeWeaverAwareProcessor后置处理器，用来处理
+		// 如果bean工厂中存在着名称为loadTimeWeaver的bean定义，则给bean工厂中加入LoaderTimeWeaverAwareProcessor后置处理器
+		//   用来完成AOP的静态代理解析-代码织入
 		if (beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
 			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
 			// Set a temporary ClassLoader for type matching.
@@ -807,13 +813,15 @@ public abstract class AbstractApplicationContext
 
 		// 给容器中注册一些与运行环境相关的单实例Bean
 		if (!beanFactory.containsLocalBean(ENVIRONMENT_BEAN_NAME)) {
-			// beanName: environment
+			// beanName: environment，直接将new出来的Spring内部对象放入到Spring的单实例缓存池中.
 			beanFactory.registerSingleton(ENVIRONMENT_BEAN_NAME, getEnvironment());
 		}
+
 		if (!beanFactory.containsLocalBean(SYSTEM_PROPERTIES_BEAN_NAME)) {
 			// beanName: systemProperties
 			beanFactory.registerSingleton(SYSTEM_PROPERTIES_BEAN_NAME, getEnvironment().getSystemProperties());
 		}
+
 		if (!beanFactory.containsLocalBean(SYSTEM_ENVIRONMENT_BEAN_NAME)) {
 			// beanName: systemEnvironment
 			beanFactory.registerSingleton(SYSTEM_ENVIRONMENT_BEAN_NAME, getEnvironment().getSystemEnvironment());

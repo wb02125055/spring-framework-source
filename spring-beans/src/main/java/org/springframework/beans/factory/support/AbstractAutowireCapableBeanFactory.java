@@ -1293,6 +1293,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			registerDependentBean(beanName, currentlyCreatedBean);
 		}
 
+		// 获取bean实例
 		return super.getObjectForBeanInstance(beanInstance, name, beanName, mbd);
 	}
 

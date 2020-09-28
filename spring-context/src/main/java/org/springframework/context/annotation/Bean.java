@@ -16,15 +16,11 @@
 
 package org.springframework.context.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.core.annotation.AliasFor;
+
+import java.lang.annotation.*;
 
 /**
  * Indicates that a method produces a bean to be managed by the Spring container.
@@ -213,11 +209,13 @@ import org.springframework.core.annotation.AliasFor;
  * @see org.springframework.beans.factory.annotation.Autowired
  * @see org.springframework.beans.factory.annotation.Value
  */
+// 注解的作用目标:ANNOTATION_TYPE表示注解可以标注在其他注解中
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+// 注解的保留位置
 @Retention(RetentionPolicy.RUNTIME)
+// 注解将被包含在javadoc中
 @Documented
 public @interface Bean {
-
 	/**
 	 * Alias for {@link #name}.
 	 * <p>Intended to be used when no other attributes are needed, for example:
