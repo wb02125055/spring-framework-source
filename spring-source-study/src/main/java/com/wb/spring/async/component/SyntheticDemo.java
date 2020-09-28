@@ -1,7 +1,5 @@
 package com.wb.spring.async.component;
 
-import java.util.Calendar;
-
 /**
  * Description: synthetic的作用
  *
@@ -16,7 +14,7 @@ public class SyntheticDemo {
 	private static class NestedClass {
 		private String highlyConfidential = "NestedClass...";
 		private int highlyConfidentialInt = 42;
-		private Calendar highlyConfidentialCalendar = Calendar.getInstance();
+//		private Calendar highlyConfidentialCalendar = Calendar.getInstance();
 		private boolean highlyConfidentialBoolean = true;
 	}
 }
