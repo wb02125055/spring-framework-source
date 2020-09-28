@@ -117,7 +117,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	private final ConcurrentMap<String, BeanWrapper> factoryBeanInstanceCache = new ConcurrentHashMap<>();
 
-	/** Cache of candidate factory methods per factory class. */
+	/**
+	 * 用来缓存每个工厂类对应的候选工厂方法
+	 */
 	private final ConcurrentMap<Class<?>, Method[]> factoryMethodCandidateCache = new ConcurrentHashMap<>();
 
 	/**
@@ -136,10 +138,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	public AbstractAutowireCapableBeanFactory() {
 		super();
+
 		// 在Bean自动装配时自动忽略BeanNameAware子类的注入
 		ignoreDependencyInterface(BeanNameAware.class);
+
 		// 忽略BeanFactoryAware接口子类的注入
 		ignoreDependencyInterface(BeanFactoryAware.class);
+
 		// 忽略BeanClassLoaderAware接口子类的注入
 		ignoreDependencyInterface(BeanClassLoaderAware.class);
 	}
