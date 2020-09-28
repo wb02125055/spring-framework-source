@@ -278,8 +278,10 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	public void setResourceLoader(@Nullable ResourceLoader resourceLoader) {
 		// ResourcePatternResolver是一个接口。用来初始化资源解析器，继承了ResourceLoader，可以用来获取Resource 实例
 		this.resourcePatternResolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
+
 		// 初始化元数据读取器工厂
 		this.metadataReaderFactory = new CachingMetadataReaderFactory(resourceLoader);
+
 		/**
 		 * 方法是spring5.0以后加入的新特性，Spring Framework 5 改进了扫描和识别组件的方法，使大型项目的性能得到提升。
 		 * 目前，扫描是在编译时执行的，而且向 META-INF/spring.components 文件中的索引文件添加了组件坐标。该索引是通过一个为项目定义的特定平台应用的构建任务来生成的。

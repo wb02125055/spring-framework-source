@@ -162,8 +162,10 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		if (useDefaultFilters) {
 			registerDefaultFilters();
 		}
+
 		/** 设置默认的环境信息，默认为：StandardEnvironment */
 		setEnvironment(environment);
+
 		/** 设置默认的ResourceLoader，默认为：AnnotationConfigApplicationContext. */
 		setResourceLoader(resourceLoader);
 	}
@@ -248,11 +250,11 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 */
 	public int scan(String... basePackages) {
 
-		// 获取包扫描之前bean定义注册中心中的bean定义的数量.
+		// 获取包扫描之前bean定义注册中心中的bean定义的数量，直接返回beanDefinitionMap的size
 		int beanCountAtScanStart = this.registry.getBeanDefinitionCount();
 
 		// 执行扫描操作。
-		// 并将扫描到的bean定义注册到bean定义注册中心。即：beanDefinitionMap中。如果bean存在着别名，别名也会被注册到aliasMap中.
+		//  并将扫描到的bean定义注册到bean定义注册中心。即：beanDefinitionMap中。如果bean存在着别名，别名也会被注册到aliasMap中.
 		doScan(basePackages);
 
 		// Register annotation config processors, if necessary.
@@ -275,7 +277,9 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 */
 	protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
+
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
+
 		for (String basePackage : basePackages) {
 			// 从类路径下扫描候选的bean定义
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
@@ -382,6 +386,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		if (registry instanceof EnvironmentCapable) {
 			return ((EnvironmentCapable) registry).getEnvironment();
 		}
+		// 创建标准环境信息对象
 		return new StandardEnvironment();
 	}
 

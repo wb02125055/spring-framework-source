@@ -85,7 +85,11 @@ public class AnnotationConfigApplicationContext
 		 */
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 
-		/** 3.初始化默认的Bean定义扫描器，在ClassPathBeanDefinitionScanner的构造中，会初始化配置文件解析器 */
+		/**
+		 * 3.初始化默认的Bean定义扫描器，在ClassPathBeanDefinitionScanner的构造中，会初始化配置文件解析器
+		 *
+		 *  初始化CandidateComponentsIndexLoader对象，用来按照索引加载bean定义
+		 */
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
 
@@ -95,7 +99,11 @@ public class AnnotationConfigApplicationContext
 	 */
 	public AnnotationConfigApplicationContext(DefaultListableBeanFactory beanFactory) {
 		super(beanFactory);
+
+		// 创建注解类型的bean定义读取器，用来给容器中注册一些Spring框架本身需要使用的内部Bean
 		this.reader = new AnnotatedBeanDefinitionReader(this);
+
+		// 创建bean定义扫描器，完成bean定义扫描的准备操作
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
 
