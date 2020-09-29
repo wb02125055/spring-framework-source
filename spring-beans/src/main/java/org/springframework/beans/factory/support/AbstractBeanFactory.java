@@ -1712,9 +1712,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			removeSingleton(beanName);
 			return true;
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
 
 	/**
