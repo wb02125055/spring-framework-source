@@ -326,6 +326,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					 * 举个例子，假如我们需要对工厂bean进行处理，那么这里得到的其实是工厂bean的初始状态，
 					 *   但是我们真正需要的是工厂bean中定义的 factory-method方法中返回的bean，
 					 *   而getObjectForBeanInstance方法就是完成这个工作的。
+					 *
+					 *
+					 *   真实作用：如果一个类实现了FactoryBean接口，则上述bean创建完成之后，其实只是创建好了工厂bean，但是真实的应用
+					 *    bean还未创建，此处将会回调FactoryBean的getObject自定义方法进行应用bean的创建工作。
 					 */
 					bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
 				}
@@ -1736,7 +1740,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			Object beanInstance, String name, String beanName, @Nullable RootBeanDefinition mbd) {
 
 		// Don't let calling code try to dereference the factory if the bean isn't a factory.
-		if (BeanFactoryUtils.isFactoryDereference(name)) { // 不为null而且以&开头
+		// 不为null而且以&开头
+		if (BeanFactoryUtils.isFactoryDereference(name)) {
 			if (beanInstance instanceof NullBean) {
 				return beanInstance;
 			}
@@ -1748,6 +1753,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		// Now we have the bean instance, which may be a normal bean or a FactoryBean.
 		// If it's a FactoryBean, we use it to create a bean instance, unless the
 		// caller actually wants a reference to the factory.
+		// 如果不是工厂bean，而且bean的名称也是不是以&开头，则直接返回上一步中已经创建好的bean对象.
 		if (!(beanInstance instanceof FactoryBean) || BeanFactoryUtils.isFactoryDereference(name)) {
 			return beanInstance;
 		}
@@ -1757,13 +1763,16 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			// 先从缓存中获取
 			object = getCachedObjectForFactoryBean(beanName);
 		}
+
 		if (object == null) {
 			// Return bean instance from factory.
 			FactoryBean<?> factory = (FactoryBean<?>) beanInstance;
+
 			// Caches object obtained from FactoryBean if it is a singleton.
 			if (mbd == null && containsBeanDefinition(beanName)) {
 				mbd = getMergedLocalBeanDefinition(beanName);
 			}
+			// bean定义不为空而且对应的class类为一个合成类.
 			boolean synthetic = (mbd != null && mbd.isSynthetic());
 
 			// 回调FactoryBean的getObject方法
