@@ -41,6 +41,8 @@ public interface ConversionService {
 	 * @param targetType the target type to convert to (required)
 	 * @return {@code true} if a conversion can be performed, {@code false} if not
 	 * @throws IllegalArgumentException if {@code targetType} is {@code null}
+	 *
+	 * 判断对象是否可以从sourceType类型转换为targetType类型
 	 */
 	boolean canConvert(@Nullable Class<?> sourceType, Class<?> targetType);
 
@@ -71,6 +73,8 @@ public interface ConversionService {
 	 * @return the converted object, an instance of targetType
 	 * @throws ConversionException if a conversion exception occurred
 	 * @throws IllegalArgumentException if targetType is {@code null}
+	 *
+	 * 将给定的source对象转换为targetType类型
 	 */
 	@Nullable
 	<T> T convert(@Nullable Object source, Class<T> targetType);

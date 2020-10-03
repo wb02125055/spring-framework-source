@@ -16,12 +16,8 @@
 
 package org.springframework.core.env;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.ConfigurableConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
@@ -30,6 +26,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.PropertyPlaceholderHelper;
 import org.springframework.util.SystemPropertyUtils;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Abstract base class for resolving properties against any underlying source.
@@ -55,8 +54,10 @@ public abstract class AbstractPropertyResolver implements ConfigurablePropertyRe
 
 	/** 属性占位符前缀 */
 	private String placeholderPrefix = SystemPropertyUtils.PLACEHOLDER_PREFIX;
+
 	/** 属性占位符后缀 */
 	private String placeholderSuffix = SystemPropertyUtils.PLACEHOLDER_SUFFIX;
+
 	/** 属性占位符分隔符 */
 	@Nullable
 	private String valueSeparator = SystemPropertyUtils.VALUE_SEPARATOR;
@@ -209,9 +210,10 @@ public abstract class AbstractPropertyResolver implements ConfigurablePropertyRe
 	@Override
 	public String resolveRequiredPlaceholders(String text) throws IllegalArgumentException {
 		if (this.strictHelper == null) {
-			/** 创建PropertyPlaceholderHelper对象 */
+			// 创建PropertyPlaceholderHelper对象
 			this.strictHelper = createPlaceholderHelper(false);
 		}
+		// 执行解析占位符的操作
 		return doResolvePlaceholders(text, this.strictHelper);
 	}
 
@@ -233,10 +235,10 @@ public abstract class AbstractPropertyResolver implements ConfigurablePropertyRe
 	}
 
 	private PropertyPlaceholderHelper createPlaceholderHelper(boolean ignoreUnresolvablePlaceholders) {
-		// placeholderPrefix: ${
-		// placeholderSuffix: }
-		// valueSeparator: :
-		// ignoreUnresolvablePlaceHolders: true
+		// 默认的占位符前缀placeholderPrefix: ${
+		// 默认的占位符后缀placeholderSuffix: }
+		// 默认占位符的分隔符valueSeparator: :
+		// 是否忽略无法解析的占位符: ignoreUnresolvablePlaceHolders: true
 		return new PropertyPlaceholderHelper(this.placeholderPrefix, this.placeholderSuffix,
 				this.valueSeparator, ignoreUnresolvablePlaceholders);
 	}
@@ -266,8 +268,10 @@ public abstract class AbstractPropertyResolver implements ConfigurablePropertyRe
 			if (ClassUtils.isAssignableValue(targetType, value)) {
 				return (T) value;
 			}
+			// 【懒汉式单例设计模式】获取默认的值类型转换器
 			conversionServiceToUse = DefaultConversionService.getSharedInstance();
 		}
+		// 使用配置的或者默认的值转换器对解析出来的值进行类型转换
 		return conversionServiceToUse.convert(value, targetType);
 	}
 

@@ -113,7 +113,7 @@ final class PostProcessorRegistrationDelegate {
 
 
 			// 遍历当前要执行的所有BeanDefinitionRegistryPostProcessor，执行其postProcessBeanDefinitionRegistry方法.
-			// 此处有一个重要的Bean定义注册中心的后置处理器：ConfigurationClassPostProcessor
+			// 此处有一个重要的Bean定义注册中心的后置处理器：ConfigurationClassPostProcessor，配置类解析、条件注册的回调、方法及配置类的校验等操作
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
 			// 执行完毕之后，清空currentRegistryProcessors
 			currentRegistryProcessors.clear();

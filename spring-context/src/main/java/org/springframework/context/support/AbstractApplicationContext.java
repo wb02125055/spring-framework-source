@@ -318,6 +318,7 @@ public abstract class AbstractApplicationContext
 	@Override
 	public ConfigurableEnvironment getEnvironment() {
 		if (this.environment == null) {
+			// StandardEnvironment
 			this.environment = createEnvironment();
 		}
 		return this.environment;
@@ -521,13 +522,13 @@ public abstract class AbstractApplicationContext
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
 			/**
-			 * 1.准备上下文的刷新工作，记录bean容器的启动时间
+			 * 1.准备上下文的刷新工作，记录bean容器的启动时间，容器活跃状态
 			 *    验证系统中一些属性和属性值的设置等.
 			 *    使用LinkedHashSet初始化earlyApplicationListeners和earlyApplicationEvents
 			 */
 			prepareRefresh();
 			/**
-			 * 2.获取Bean工厂，期间会做解析和加载bean定义的一些列工作.
+			 * 2.获取Bean工厂，期间会做解析和加载bean定义的一些列工作.生成BeanDefinition对象.
 			 * 此处返回的beanFactory的真实类型为：DefaultListableBeanFactory
 			 *
 			 *
@@ -584,6 +585,7 @@ public abstract class AbstractApplicationContext
 				 *
 				 *
 				 *  配置类中的Selector类型的组件和@Component,@ComponentScan中的元数据信息也会在该步骤中进行解析
+				 *    还包括执行条件注解@Condition的回调逻辑
 				 *
 				 *
 				 *  ImportBeanDefinitionRegistrar对应的registerBeanDefinitions方法也会在该步骤中调用，给容器中注册自定义的组件.
@@ -696,6 +698,8 @@ public abstract class AbstractApplicationContext
 		/**
 		 * 如果需要在验证系统属性之前，给系统中设置一些默认值。可以通过继承AbstractApplicationContext类，并重写该方法实现。
 		 * Spring留给开发人员的一个扩展点.
+		 *
+		 * 例如子类在方法中设置环境属性中必须需要的变量：getEnvironment().setRequiredProperties("myProp");
 		 */
 		initPropertySources();
 
@@ -711,6 +715,7 @@ public abstract class AbstractApplicationContext
 
 		// Store pre-refresh ApplicationListeners...
 		if (this.earlyApplicationListeners == null) {
+			/** 在SpringBoot中会有大量的初始化监听器，用于初始化使用 */
 			this.earlyApplicationListeners = new LinkedHashSet<>(this.applicationListeners);
 		}
 		else {
@@ -721,7 +726,7 @@ public abstract class AbstractApplicationContext
 
 		// Allow for the collection of early ApplicationEvents,
 		// to be published once the multicaster is available...
-		// 定义早期的应用事件.
+		/** 定义早期的应用事件 */
 		this.earlyApplicationEvents = new LinkedHashSet<>();
 	}
 
@@ -774,29 +779,34 @@ public abstract class AbstractApplicationContext
 		*   而是需要通过setEnvironment方法进行注入，下面的其他接口都类似.
 		*/
 		beanFactory.ignoreDependencyInterface(EnvironmentAware.class);
+
 		// 可以通过实现EmbeddedValueResolverAware接口来获取String类型值的解析器
 		beanFactory.ignoreDependencyInterface(EmbeddedValueResolverAware.class);
+
 		// 资源加载器，例如使用：@Autowired ResourceLoaderAware aware; 将不会被注入
 		beanFactory.ignoreDependencyInterface(ResourceLoaderAware.class);
+
 		// 事件发布器
 		beanFactory.ignoreDependencyInterface(ApplicationEventPublisherAware.class);
+
 		// 消息资源
 		beanFactory.ignoreDependencyInterface(MessageSourceAware.class);
+
 		// 应用的上下文信息
 		beanFactory.ignoreDependencyInterface(ApplicationContextAware.class);
-
 
 		// 注册一些可以自动装配的接口。 当类型为dependencyType时， 注入autowiredValue
 		// 例如下面第一个，当注入类型为BeanFactory时，注入的值为beanFactory，默认为DefaultListableBeanFactory
 		beanFactory.registerResolvableDependency(BeanFactory.class, beanFactory);
+
 		// 当注入类型为ResourceLoader时，注入的值为ApplicationContext
 		beanFactory.registerResolvableDependency(ResourceLoader.class, this);
+
 		// 当注如类型为ApplicationEventPublisher时，注入的值为ApplicationContext
 		beanFactory.registerResolvableDependency(ApplicationEventPublisher.class, this);
+
 		// 当注入的类型为ApplicationContext时，注入的值为ApplicationContext.
 		beanFactory.registerResolvableDependency(ApplicationContext.class, this);
-
-
 
 		// 增加一个bean的后置处理器，ApplicationListenerDetector
 		// Register early post-processor for detecting inner beans as ApplicationListeners.
@@ -818,12 +828,12 @@ public abstract class AbstractApplicationContext
 		}
 
 		if (!beanFactory.containsLocalBean(SYSTEM_PROPERTIES_BEAN_NAME)) {
-			// beanName: systemProperties
+			// beanName: systemProperties   方法：System.getProperties();
 			beanFactory.registerSingleton(SYSTEM_PROPERTIES_BEAN_NAME, getEnvironment().getSystemProperties());
 		}
 
 		if (!beanFactory.containsLocalBean(SYSTEM_ENVIRONMENT_BEAN_NAME)) {
-			// beanName: systemEnvironment
+			// beanName: systemEnvironment,   方法：System.getEnv();
 			beanFactory.registerSingleton(SYSTEM_ENVIRONMENT_BEAN_NAME, getEnvironment().getSystemEnvironment());
 		}
 	}

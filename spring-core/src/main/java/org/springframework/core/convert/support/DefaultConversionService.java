@@ -40,9 +40,9 @@ import org.springframework.lang.Nullable;
  */
 public class DefaultConversionService extends GenericConversionService {
 
+	/** 【懒汉式单例设计模式DCL】使用volatile禁止指令重排序 */
 	@Nullable
 	private static volatile DefaultConversionService sharedInstance;
-
 
 	/**
 	 * Create a new {@code DefaultConversionService} with the set of

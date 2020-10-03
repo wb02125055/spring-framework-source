@@ -299,10 +299,13 @@ public class AnnotatedBeanDefinitionReader {
 		for (BeanDefinitionCustomizer customizer : definitionCustomizers) {
 			customizer.customize(abd);
 		}
+
 		// 用来保存Bean的定义。包括bean的名称，定义及别名信息
 		BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(abd, beanName);
+
 		// 设置bean定义的作用域模式，如果为ScopedProxyMode.NO，直接返回.
 		definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
+
 		// 真正完成配置类bean定义的注册。将bean定义注册到bean定义注册中心，即：BeanDefinitionRegistry中
 		// this.registry即AnnotationConfigApplicationContext对象
 		BeanDefinitionReaderUtils.registerBeanDefinition(definitionHolder, this.registry);

@@ -82,6 +82,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	 * @throws BeansException if context creation failed
 	 */
 	public ClassPathXmlApplicationContext(String configLocation) throws BeansException {
+		// 本类构造函数
 		this(new String[] {configLocation}, true, null);
 	}
 
@@ -134,20 +135,22 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	 * @throws BeansException if context creation failed
 	 * @see #refresh()
 	 */
-	public ClassPathXmlApplicationContext(
-			String[] configLocations, boolean refresh, @Nullable ApplicationContext parent)
-			throws BeansException {
+	public ClassPathXmlApplicationContext(String[] configLocations,
+										  boolean refresh,
+										  @Nullable ApplicationContext parent) throws BeansException {
 		/**
 		 * 1.调用父类构造函数完成一些资源的初始化：
 		 * 1.1 初始化默认的资源文件解析器，默认为：PathMatchingResourcePatternResolver.
 		 * 1.2 初始化默认的类加载器.
 		 */
 		super(parent);
-		/** 2.解析配置文件的路径，例如：applicationContext-${user.name}.xml这种配置文件名称，并且保存到configLocations中，为下一步的解析bean定义做准备 */
+
+		// 2.解析配置文件的路径，例如：applicationContext-${user.name}.xml这种配置文件名称，并且保存到configLocations中，为下一步的解析bean定义做准备
 		setConfigLocations(configLocations);
-		/** 3.如果需要刷新容器 */
+
+		// 3.如果需要刷新容器
 		if (refresh) {
-			/** 执行刷新容器的操作. */
+			// 执行刷新容器的操作
 			refresh();
 		}
 	}

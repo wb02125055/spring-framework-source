@@ -124,11 +124,11 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	 */
 	@Override
 	protected final void refreshBeanFactory() throws BeansException {
-		// 判断bean工厂是否存在，如果存在需要先销毁和关闭。否则会出现问题.
+		// 判断bean工厂是否存在，如果存在需要先销毁和关闭。否则会出现问题
 		if (hasBeanFactory()) {
 			// 销毁bean，根据bean的名称将bean工厂中的所有bean都从map中移除
 			destroyBeans();
-			// 关闭bean工厂，设置Bean工厂的序列化id为null，并将beanFactory的值赋值为null.
+			// 关闭bean工厂，设置Bean工厂的序列化id为null，并将beanFactory的值赋值为null
 			closeBeanFactory();
 		}
 		try {
@@ -144,8 +144,9 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 			 */
 			customizeBeanFactory(beanFactory);
 
-			/** 解析并加载bean的定义，默认是通过AbstractXmlApplicationContext类中的loadBeanDefinitions实现. */
+			// 解析并加载bean的定义，默认是通过AbstractXmlApplicationContext类中的loadBeanDefinitions实现
 			loadBeanDefinitions(beanFactory);
+
 			synchronized (this.beanFactoryMonitor) {
 				this.beanFactory = beanFactory;
 			}

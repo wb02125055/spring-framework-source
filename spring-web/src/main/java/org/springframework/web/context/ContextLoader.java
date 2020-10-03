@@ -279,7 +279,8 @@ public class ContextLoader {
 			// it is available on ServletContext shutdown.
 			// 在创建xml版本的时候没有传入context对象，context是空的，所以在这里需要创建跟容器对象
 			if (this.context == null) {
-				// 因为xml版本中context为空，所以此处是用来创建根容器对象的
+				// 因为xml版本中context为空，所以此处是用来创建根容器对象的。
+				// 		通过xml方式创建的context的真实类型为：XmlWebApplicationContext，然后被向上转型为ConfigurableWebApplicationContext类型
 				this.context = createWebApplicationContext(servletContext);
 			}
 			if (this.context instanceof ConfigurableWebApplicationContext) {
@@ -340,7 +341,10 @@ public class ContextLoader {
 	 * @see ConfigurableWebApplicationContext
 	 */
 	protected WebApplicationContext createWebApplicationContext(ServletContext sc) {
+		// 获取容器上下文对应的class对象
 		Class<?> contextClass = determineContextClass(sc);
+
+		// 如果不是ConfigurableWebApplicationContext类型或者其子类，则直接抛出异常
 		if (!ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass)) {
 			throw new ApplicationContextException("Custom context class [" + contextClass.getName() +
 					"] is not of type [" + ConfigurableWebApplicationContext.class.getName() + "]");
@@ -357,6 +361,7 @@ public class ContextLoader {
 	 * @see org.springframework.web.context.support.XmlWebApplicationContext
 	 */
 	protected Class<?> determineContextClass(ServletContext servletContext) {
+		// contextClass
 		String contextClassName = servletContext.getInitParameter(CONTEXT_CLASS_PARAM);
 		if (contextClassName != null) {
 			try {
@@ -368,6 +373,8 @@ public class ContextLoader {
 			}
 		}
 		else {
+			// 通过从ContextLoader.properties中读取需要初始化的Class类，然后通过反射进行实例化
+			// org.springframework.web.context.support.XmlWebApplicationContext
 			contextClassName = defaultStrategies.getProperty(WebApplicationContext.class.getName());
 			try {
 				return ClassUtils.forName(contextClassName, ContextLoader.class.getClassLoader());

@@ -247,7 +247,9 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	 * {@link Configuration} classes.
 	 */
 	public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
+		// 用来保存解析出来的bean定义
 		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
+
 		// 获取bean定义注册中心中的所有bean的名称.
 		String[] candidateNames = registry.getBeanDefinitionNames();
 
@@ -306,6 +308,9 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		do {
 			// 解析配置类中的注解信息，例如：ComponentScan[s], PropertySource[s], ImportResource
 			parser.parse(candidates);
+
+			// 做一些配置类的基本校验
+			// 	 例如：(1) 标注@Configuration的类不能是final类型的; (2)
 			parser.validate();
 
 			Set<ConfigurationClass> configClasses = new LinkedHashSet<>(parser.getConfigurationClasses());

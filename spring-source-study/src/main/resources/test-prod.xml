@@ -4,7 +4,7 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<bean id="menu" class="com.wb.spring.xml.ProdMenu">
-		<property name="id" value="${prod.menu.id}" />
-		<property name="name" value="${prod.menu.name}" />
+		<property name="id" value="100" />
+		<property name="name" value="wangbin333" />
 	</bean>
 </beans>

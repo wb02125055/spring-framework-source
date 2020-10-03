@@ -106,6 +106,7 @@ public class GenericApplicationContext extends AbstractApplicationContext implem
 
 	private boolean customClassLoader = false;
 
+	/** 标记容器是否已经刷新 */
 	private final AtomicBoolean refreshed = new AtomicBoolean();
 
 

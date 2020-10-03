@@ -36,6 +36,8 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author Juergen Hoeller
  * @since 2.5.2
+ *
+ * 通过map来完成对alias的简单增删改操作
  */
 public class SimpleAliasRegistry implements AliasRegistry {
 

@@ -88,7 +88,9 @@ public abstract class TemplateAwareExpressionParser implements ExpressionParser 
 	 */
 	private Expression[] parseExpressions(String expressionString, ParserContext context) throws ParseException {
 		List<Expression> expressions = new ArrayList<>();
+		// #{
 		String prefix = context.getExpressionPrefix();
+		// }
 		String suffix = context.getExpressionSuffix();
 		int startIdx = 0;
 

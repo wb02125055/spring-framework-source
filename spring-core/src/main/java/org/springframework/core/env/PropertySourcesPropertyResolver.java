@@ -71,11 +71,13 @@ public class PropertySourcesPropertyResolver extends AbstractPropertyResolver {
 	@Override
 	@Nullable
 	protected String getPropertyAsRawString(String key) {
+		// 根据占位符key获取占位符对应的属性值
 		return getProperty(key, String.class, false);
 	}
 
 	@Nullable
 	protected <T> T getProperty(String key, Class<T> targetValueType, boolean resolveNestedPlaceholders) {
+		// propertySources: 该对象中包括了systemProperties和systemEnvironment对象，是系统中的一些默认属性信息
 		if (this.propertySources != null) {
 			for (PropertySource<?> propertySource : this.propertySources) {
 				if (logger.isTraceEnabled()) {
@@ -85,9 +87,12 @@ public class PropertySourcesPropertyResolver extends AbstractPropertyResolver {
 				Object value = propertySource.getProperty(key);
 				if (value != null) {
 					if (resolveNestedPlaceholders && value instanceof String) {
+						// 如果需要解析嵌套格式的占位符，则再次调用resolveNestedPlaceholders方法
 						value = resolveNestedPlaceholders((String) value);
 					}
+					// 打印debug日志
 					logKeyFound(key, propertySource, value);
+					// 如果解析出来的值需要通过指定的解析器解析，则调用自定义的解析器进行值的解析操作
 					return convertValueIfNecessary(value, targetValueType);
 				}
 			}

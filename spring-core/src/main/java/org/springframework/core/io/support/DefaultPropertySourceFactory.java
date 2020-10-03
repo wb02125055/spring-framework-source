@@ -16,10 +16,10 @@
 
 package org.springframework.core.io.support;
 
-import java.io.IOException;
-
 import org.springframework.core.env.PropertySource;
 import org.springframework.lang.Nullable;
+
+import java.io.IOException;
 
 /**
  * The default implementation for {@link PropertySourceFactory},
@@ -34,6 +34,7 @@ public class DefaultPropertySourceFactory implements PropertySourceFactory {
 
 	@Override
 	public PropertySource<?> createPropertySource(@Nullable String name, EncodedResource resource) throws IOException {
+		// 创建属性资源对象，PropertySourceFactory的默认工厂实现
 		return (name != null ? new ResourcePropertySource(name, resource) : new ResourcePropertySource(resource));
 	}
 

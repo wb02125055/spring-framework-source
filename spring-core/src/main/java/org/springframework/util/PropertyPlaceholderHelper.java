@@ -41,6 +41,7 @@ public class PropertyPlaceholderHelper {
 
 	private static final Log logger = LogFactory.getLog(PropertyPlaceholderHelper.class);
 
+	/** 保存占位符后缀和前缀的对应关系 */
 	private static final Map<String, String> wellKnownSimplePrefixes = new HashMap<>(4);
 
 	static {
@@ -87,9 +88,14 @@ public class PropertyPlaceholderHelper {
 			@Nullable String valueSeparator, boolean ignoreUnresolvablePlaceholders) {
 		Assert.notNull(placeholderPrefix, "'placeholderPrefix' must not be null");
 		Assert.notNull(placeholderSuffix, "'placeholderSuffix' must not be null");
+
+		// ${
 		this.placeholderPrefix = placeholderPrefix;
+		// }
 		this.placeholderSuffix = placeholderSuffix;
 		String simplePrefixForSuffix = wellKnownSimplePrefixes.get(this.placeholderSuffix);
+
+		// ${
 		if (simplePrefixForSuffix != null && this.placeholderPrefix.endsWith(simplePrefixForSuffix)) {
 			this.simplePrefix = simplePrefixForSuffix;
 		}
@@ -128,11 +134,13 @@ public class PropertyPlaceholderHelper {
 	protected String parseStringValue(
 			String value, PlaceholderResolver placeholderResolver, @Nullable Set<String> visitedPlaceholders) {
 
+		// 如果没有占位符，直接返回.例如：$Value("wangbin33") 这种类型.直接返回wangbin33
 		int startIndex = value.indexOf(this.placeholderPrefix);
 		if (startIndex == -1) {
 			return value;
 		}
 
+		// 解析占位符对应的key: 如${user.name}, ${file-${name}}
 		StringBuilder result = new StringBuilder(value);
 		while (startIndex != -1) {
 			int endIndex = findPlaceholderEndIndex(result, startIndex);
@@ -146,8 +154,13 @@ public class PropertyPlaceholderHelper {
 					throw new IllegalArgumentException(
 							"Circular placeholder reference '" + originalPlaceholder + "' in property definitions");
 				}
-				// Recursive invocation, parsing placeholders contained in the placeholder key.
+				/**
+				 * 递归调用parseStringValue方法
+				 * 递归调用的原因是可能会出现类似于：spring-${user.name.${evn}}.xml这样的嵌套占位符.
+				 */
+				// Recursive invocation, parsing placeholders contained in the placeholder key. 解析出占位符中的key
 				placeholder = parseStringValue(placeholder, placeholderResolver, visitedPlaceholders);
+
 				// Now obtain the value for the fully resolved key...
 				String propVal = placeholderResolver.resolvePlaceholder(placeholder);
 				if (propVal == null && this.valueSeparator != null) {

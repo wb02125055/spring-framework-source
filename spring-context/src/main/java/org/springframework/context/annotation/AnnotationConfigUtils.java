@@ -348,7 +348,6 @@ public abstract class AnnotationConfigUtils {
 
 	static Set<AnnotationAttributes> attributesForRepeatable(AnnotationMetadata metadata,
 			Class<?> containerClass, Class<?> annotationClass) {
-
 		return attributesForRepeatable(metadata, containerClass.getName(), annotationClass.getName());
 	}
 

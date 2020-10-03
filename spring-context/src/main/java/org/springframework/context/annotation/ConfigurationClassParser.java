@@ -143,7 +143,7 @@ class ConfigurationClassParser {
 		for (BeanDefinitionHolder holder : configCandidates) {
 			BeanDefinition bd = holder.getBeanDefinition();
 			try {
-				// 配置类的Bean定义类型为AnnotationGenericBeanDefinition，实现自AnnotationBeanDefinition接口.
+				// 配置类的Bean定义类型为AnnotationGenericBeanDefinition，实现自AnnotatedBeanDefinition接口.
 				if (bd instanceof AnnotatedBeanDefinition) {
 					parse(((AnnotatedBeanDefinition) bd).getMetadata(), holder.getBeanName());
 				}
@@ -177,6 +177,7 @@ class ConfigurationClassParser {
 	}
 
 	protected final void parse(AnnotationMetadata metadata, String beanName) throws IOException {
+		// 处理配置类.
 		processConfigurationClass(new ConfigurationClass(metadata, beanName));
 	}
 
@@ -217,8 +218,9 @@ class ConfigurationClassParser {
 			}
 		}
 
-		// Recursively process the configuration class and its superclass hierarchy.
-		SourceClass sourceClass = asSourceClass(configClass); // 解析配置类中的元数据信息，包括配置类上面的注解信息.
+		// Recursively process the configuration class and its superclass hierarchy
+		// 递归调用asSourceClass方法来解析当前配置类及父配置类中的元数据信息，包括配置类上面的注解信息
+		SourceClass sourceClass = asSourceClass(configClass);
 		do {
 			sourceClass = doProcessConfigurationClass(configClass, sourceClass);
 		}
@@ -411,30 +413,44 @@ class ConfigurationClassParser {
 	 * @throws IOException if loading a property source failed
 	 */
 	private void processPropertySource(AnnotationAttributes propertySource) throws IOException {
+
+		// 解析：@PropertySource(value = {"classpath:public.properties"},encoding = "UTF-8", name = "testSource", ignoreResourceNotFound = false)
+
 		String name = propertySource.getString("name");
 		if (!StringUtils.hasLength(name)) {
 			name = null;
 		}
+
+		// 资源文件的字符编码
 		String encoding = propertySource.getString("encoding");
 		if (!StringUtils.hasLength(encoding)) {
 			encoding = null;
 		}
 		String[] locations = propertySource.getStringArray("value");
 		Assert.isTrue(locations.length > 0, "At least one @PropertySource(value) location is required");
+
+		// 如果未找到对应的资源，是否忽略，默认值为false。表示不忽略，没找到资源，将会抛出异常
 		boolean ignoreResourceNotFound = propertySource.getBoolean("ignoreResourceNotFound");
 
+		// 获取自定义的属性资源工厂类，用于创建属性资源对象来解析属性资源配置文件的内容，未指定，则使用默认的DefaultPropertySourceFactory
 		Class<? extends PropertySourceFactory> factoryClass = propertySource.getClass("factory");
 		PropertySourceFactory factory = (factoryClass == PropertySourceFactory.class ?
 				DEFAULT_PROPERTY_SOURCE_FACTORY : BeanUtils.instantiateClass(factoryClass));
 
 		for (String location : locations) {
 			try {
+				// 解析资源文件的真实文件路径
 				String resolvedLocation = this.environment.resolveRequiredPlaceholders(location);
+
+				// 根据解析到的真实资源文件路径，将资源文件内容转换为Resource资源对象
 				Resource resource = this.resourceLoader.getResource(resolvedLocation);
+
+				// 将解析到的资源对象放到资源对象集合中
 				addPropertySource(factory.createPropertySource(name, new EncodedResource(resource, encoding)));
 			}
 			catch (IllegalArgumentException | FileNotFoundException | UnknownHostException ex) {
 				// Placeholders not resolvable or resource not found when trying to open it
+				// 如果忽略未找到资源的情况下，则只会打印出日志信息。如果不忽略，将会抛出异常
 				if (ignoreResourceNotFound) {
 					if (logger.isInfoEnabled()) {
 						logger.info("Properties location [" + location + "] not resolvable: " + ex.getMessage());

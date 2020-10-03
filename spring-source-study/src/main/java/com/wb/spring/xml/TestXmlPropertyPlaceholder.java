@@ -1,7 +1,10 @@
 package com.wb.spring.xml;
 
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.ClassPathResource;
 
 /**
  * Description:
@@ -20,8 +23,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class TestXmlPropertyPlaceholder {
 	public static void main(String[] args) {
 //		ApplicationContext acx = new MyXmlApplicationContext("spring-all.xml");
-		ApplicationContext acx = new ClassPathXmlApplicationContext("spring-all.xml");
+		ApplicationContext acx = new ClassPathXmlApplicationContext("spring-${user.name}.xml");
 		Object menu = acx.getBean("menu");
+		Object otherProcessor = acx.getBean("otherProcessor");
 		System.out.println(menu);
+		System.out.println(otherProcessor);
+
+//		BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("spring-all.xml"));
+//		Object result = beanFactory.getBean("testBean");
+//		System.out.println(result);
 	}
 }

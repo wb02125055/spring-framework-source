@@ -118,6 +118,8 @@ class ConditionEvaluator {
 			if (condition instanceof ConfigurationCondition) {
 				requiredPhase = ((ConfigurationCondition) condition).getConfigurationPhase();
 			}
+			// 通过扩展Condition接口，自定义实现类来判断当前的bean定义是否需要跳过. 通过Condition的matches方法的返回值判断
+			//   matches方法返回了true，表示需要正常注册bean定义。如果返回了false，则表示不需要注册，直接跳过
 			if ((requiredPhase == null || requiredPhase == phase) && !condition.matches(this.context, metadata)) {
 				return true;
 			}

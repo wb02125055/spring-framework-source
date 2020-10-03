@@ -34,7 +34,7 @@ import javax.sql.DataSource;
 @EnableTransactionManagement // 开启基于注解的事务管理功能.
 @Configuration
 @ComponentScan(basePackages = "com.wb.spring.tx")
-public class TxConfig {
+public /*final*/ class TxConfig {
 
 	@Bean
 	public DataSource dataSource() throws Exception {

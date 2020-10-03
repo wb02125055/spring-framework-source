@@ -575,7 +575,7 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 	@Override
 	public String resolveRequiredPlaceholders(String text) throws IllegalArgumentException {
 		// this.propertyResolver: PropertySourcesPropertyResolver
-		/** 根据传入的配置文件名称解析配置文件真正的路径 */
+		// 根据传入的配置文件名称解析配置文件真正的路径，默认调用的是AbstractPropertyResolver抽象实现
 		return this.propertyResolver.resolveRequiredPlaceholders(text);
 	}
 

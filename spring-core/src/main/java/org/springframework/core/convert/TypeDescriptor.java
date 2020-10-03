@@ -51,12 +51,21 @@ public class TypeDescriptor implements Serializable {
 
 	private static final Annotation[] EMPTY_ANNOTATION_ARRAY = new Annotation[0];
 
+	/** 用来缓存class和类型描述符的对应关系 */
 	private static final Map<Class<?>, TypeDescriptor> commonTypesCache = new HashMap<>(32);
 
 	private static final Class<?>[] CACHED_COMMON_TYPES = {
-			boolean.class, Boolean.class, byte.class, Byte.class, char.class, Character.class,
-			double.class, Double.class, float.class, Float.class, int.class, Integer.class,
-			long.class, Long.class, short.class, Short.class, String.class, Object.class};
+			boolean.class, Boolean.class,
+			byte.class, Byte.class,
+			char.class, Character.class,
+			double.class, Double.class,
+			float.class, Float.class,
+			int.class, Integer.class,
+			long.class, Long.class,
+			short.class, Short.class,
+			String.class,
+			Object.class
+	};
 
 	static {
 		for (Class<?> preCachedClass : CACHED_COMMON_TYPES) {

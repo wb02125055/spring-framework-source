@@ -213,12 +213,14 @@ final class ConfigurationClass {
 	public void validate(ProblemReporter problemReporter) {
 		// A configuration class may not be final (CGLIB limitation)
 		if (getMetadata().isAnnotated(Configuration.class.getName())) {
+			// 标注@Configuration的类不能使用final修饰
 			if (getMetadata().isFinal()) {
 				problemReporter.error(new FinalConfigurationProblem());
 			}
 		}
-
 		for (BeanMethod beanMethod : this.beanMethods) {
+			// (1) @Bean对应的方法如果是static修饰的，则校验通过，直接返回
+			// (2) 如果标注@Bean的方法标注不能被override，则会抛出异常，因为无法使用cglib
 			beanMethod.validate(problemReporter);
 		}
 	}
