@@ -63,7 +63,6 @@ public class PluggableSchemaResolver implements EntityResolver {
 	 */
 	public static final String DEFAULT_SCHEMA_MAPPINGS_LOCATION = "META-INF/spring.schemas";
 
-
 	private static final Log logger = LogFactory.getLog(PluggableSchemaResolver.class);
 
 	@Nullable
@@ -72,6 +71,7 @@ public class PluggableSchemaResolver implements EntityResolver {
 	private final String schemaMappingsLocation;
 
 	/** Stores the mapping of schema URL -> local schema path. */
+	// 使用volatile修饰，防止jvm指令重排序导致的对象初始化问题
 	@Nullable
 	private volatile Map<String, String> schemaMappings;
 
@@ -84,7 +84,9 @@ public class PluggableSchemaResolver implements EntityResolver {
 	 * @see PropertiesLoaderUtils#loadAllProperties(String, ClassLoader)
 	 */
 	public PluggableSchemaResolver(@Nullable ClassLoader classLoader) {
+		// 设置classLoader
 		this.classLoader = classLoader;
+		// 设置schema文件的路径
 		this.schemaMappingsLocation = DEFAULT_SCHEMA_MAPPINGS_LOCATION;
 	}
 
@@ -143,6 +145,8 @@ public class PluggableSchemaResolver implements EntityResolver {
 
 	/**
 	 * Load the specified schema mappings lazily.
+	 *
+	 * 使用【懒汉式单例设计模式】DCL
 	 */
 	private Map<String, String> getSchemaMappings() {
 		Map<String, String> schemaMappings = this.schemaMappings;
@@ -176,6 +180,8 @@ public class PluggableSchemaResolver implements EntityResolver {
 
 	@Override
 	public String toString() {
+		// toString方法会触发getSchemeMappings方法的调用，如果注释掉getSchemaMappings方法的调用，则使用idea调试过程中
+		//   会发现schemaMappings属性的值就是null
 		return "EntityResolver using schema mappings " + getSchemaMappings();
 	}
 

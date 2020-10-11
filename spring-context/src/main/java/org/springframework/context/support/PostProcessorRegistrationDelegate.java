@@ -42,8 +42,8 @@ final class PostProcessorRegistrationDelegate {
 	}
 
 
-	public static void invokeBeanFactoryPostProcessors(
-			ConfigurableListableBeanFactory beanFactory, List<BeanFactoryPostProcessor> beanFactoryPostProcessors) {
+	public static void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory,
+			List<BeanFactoryPostProcessor> beanFactoryPostProcessors) {
 
 		/** 用来记录已经执行过的后置处理器 */
 		Set<String> processedBeans = new HashSet<>();

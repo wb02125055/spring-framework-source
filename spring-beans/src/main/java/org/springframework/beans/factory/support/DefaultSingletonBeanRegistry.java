@@ -65,12 +65,12 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
 	/**
 	 * Cache of singleton factories: bean name to ObjectFactory.
-	 * 二级缓存：保存对单实例bean的包装对象
+	 * 三级缓存：保存对单实例bean的包装对象
 	 */
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
 	/**
 	 * Cache of early singleton objects: bean name to bean instance.
-	 * 三级缓存：提前曝光的单例对象的缓存，用于检测循环引用
+	 * 二级缓存：提前曝光的单例对象的缓存，用于检测循环引用
 	 */
 	private final Map<String, Object> earlySingletonObjects = new HashMap<>(16);
 

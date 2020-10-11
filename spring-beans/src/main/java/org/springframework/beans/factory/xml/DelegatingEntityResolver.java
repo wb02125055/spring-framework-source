@@ -59,7 +59,14 @@ public class DelegatingEntityResolver implements EntityResolver {
 	 * (can be {@code null}) to use the default ClassLoader)
 	 */
 	public DelegatingEntityResolver(@Nullable ClassLoader classLoader) {
+		// 1. dtd文件解析器，用来解析dtd文件
 		this.dtdResolver = new BeansDtdResolver();
+
+		// 2. xsd文件解析器，用来解析xsd文件。
+
+		// 在debug的过程中，会发现一件很神奇的事儿，schemaResolver对象中的schemaMappings
+		//   属性被赋值了，但是调试过程中并没有赋值操作，这是因为idea在debug过程中会调用对象的toString方法，而在schemaResolver
+		//   对象的toString方法中调用了getSchemaMappings方法，这个方法导致了懒加载方法getSchemaMappings方法的执行，给schemaMappings赋值了
 		this.schemaResolver = new PluggableSchemaResolver(classLoader);
 	}
 

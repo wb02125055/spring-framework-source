@@ -72,6 +72,24 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 
 	public static final String RESOURCE_ATTRIBUTE = "resource";
 
+	// profile的使用
+	/**
+	 * 切换环境的时候使用:
+	 * <beans profile="dev">
+	 * </beans>
+	 *
+	 *<beans profile="prod">
+	 *</beans>
+	 *
+	 * 然后在web.xml中配置：
+	 * <context-param>
+	 *     <param-name>
+	 *         spring.profiles.active
+	 *     </param-name>
+	 *     <param-value>dev</param-value>
+	 * </context-param>
+	 *
+	 */
 	public static final String PROFILE_ATTRIBUTE = "profile";
 
 
