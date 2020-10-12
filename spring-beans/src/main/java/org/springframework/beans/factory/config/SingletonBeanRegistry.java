@@ -31,6 +31,8 @@ import org.springframework.lang.Nullable;
  * @see ConfigurableBeanFactory
  * @see org.springframework.beans.factory.support.DefaultSingletonBeanRegistry
  * @see org.springframework.beans.factory.support.AbstractBeanFactory
+ *
+ * 定义了与单实例bean注册相关的方法
  */
 public interface SingletonBeanRegistry {
 

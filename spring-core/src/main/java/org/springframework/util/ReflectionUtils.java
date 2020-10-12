@@ -787,6 +787,8 @@ public abstract class ReflectionUtils {
 	/**
 	 * Determine whether the given field is a "public static final" constant.
 	 * @param field the field to check
+	 *
+	 * 判断一个字段是否为 public static final 修饰的.
 	 */
 	public static boolean isPublicStaticFinal(Field field) {
 		int modifiers = field.getModifiers();
