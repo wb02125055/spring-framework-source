@@ -46,6 +46,9 @@ public class XmlReaderContext extends ReaderContext {
 
 	private final XmlBeanDefinitionReader reader;
 
+	/**
+	 * 名称空间解析器
+	 */
 	private final NamespaceHandlerResolver namespaceHandlerResolver;
 
 

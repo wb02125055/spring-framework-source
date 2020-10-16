@@ -163,7 +163,7 @@ public abstract class AnnotationConfigUtils {
 			}
 			// beanFactory中的autowireCandidateResolver默认为：SimpleAutowireCandidateResolver
 			if (!(beanFactory.getAutowireCandidateResolver() instanceof ContextAnnotationAutowireCandidateResolver)) {
-				// 设置Bean工厂中bean自动注入时的候选解析器. TODO ???
+				// 设置Bean工厂中bean自动注入时的候选解析器
 				beanFactory.setAutowireCandidateResolver(new ContextAnnotationAutowireCandidateResolver());
 			}
 		}
@@ -342,7 +342,8 @@ public abstract class AnnotationConfigUtils {
 	}
 
 	@Nullable
-	static AnnotationAttributes attributesFor(AnnotatedTypeMetadata metadata, String annotationClassName) { // metadata默认实现类为：StandardAnnotationMetadata
+	static AnnotationAttributes attributesFor(AnnotatedTypeMetadata metadata, String annotationClassName) {
+		// metadata默认实现类为：StandardAnnotationMetadata
 		return AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(annotationClassName, false));
 	}
 

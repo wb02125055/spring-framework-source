@@ -104,9 +104,14 @@ public class GenericApplicationContext extends AbstractApplicationContext implem
 	@Nullable
 	private ResourceLoader resourceLoader;
 
+	/**
+	 * 是否为定制的classLoader
+	 */
 	private boolean customClassLoader = false;
 
-	/** 标记容器是否已经刷新 */
+	/**
+	 * 标记容器是否已经刷新
+	 */
 	private final AtomicBoolean refreshed = new AtomicBoolean();
 
 

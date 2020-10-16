@@ -117,8 +117,10 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	public NamespaceHandler resolve(String namespaceUri) {
 		// 获取到所有的命名空间url与命名空间解析类的对应关系。例如：Map<String,Object> = {"http://tags.wb.com":"com.wb.spring.test.MyTagNamespaceHandler"};
 		Map<String, Object> handlerMappings = getHandlerMappings();
+
 		// 从Map中获取对应的命名空间解析类
 		Object handlerOrClassName = handlerMappings.get(namespaceUri);
+
 		// 如果根据命名空间的uri未获取到对应的命名空间解析类，直接返回null
 		if (handlerOrClassName == null) {
 			return null;
@@ -131,6 +133,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 			try {
 				// 加载命名空间解析类
 				Class<?> handlerClass = ClassUtils.forName(className, this.classLoader);
+
 				// 判断其是否实现了NameSpaceHandler接口，如果未实现该接口，直接抛出异常.
 				// 真实使用的时候一般是实现NameSpaceHandlerSupport这抽象类，但是这个抽象类也是实现了NameSpaceHandler接口的.
 				if (!NamespaceHandler.class.isAssignableFrom(handlerClass)) {
@@ -139,10 +142,13 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 				}
 				// 实例化命名空间解析类的实例.
 				NamespaceHandler namespaceHandler = (NamespaceHandler) BeanUtils.instantiateClass(handlerClass);
+
 				// 调用命名空间解析类的init方法.去加载所有的用于解析自定义标签的Parser类.
 				namespaceHandler.init();
+
 				// 将其放入到handlerMapping中
 				handlerMappings.put(namespaceUri, namespaceHandler);
+
 				// 返回命名空间解析类的实例对象，用于下一步去调用parse方法.
 				return namespaceHandler;
 			}

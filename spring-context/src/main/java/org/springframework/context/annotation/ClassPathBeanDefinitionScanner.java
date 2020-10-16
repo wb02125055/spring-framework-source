@@ -58,6 +58,7 @@ import java.util.Set;
  */
 public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateComponentProvider {
 
+	// Bean定义注册中心，负责bean定义的增删改查操作
 	private final BeanDefinitionRegistry registry;
 
 	private BeanDefinitionDefaults beanDefinitionDefaults = new BeanDefinitionDefaults();
@@ -133,6 +134,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 */
 	public ClassPathBeanDefinitionScanner(BeanDefinitionRegistry registry, boolean useDefaultFilters,
 			Environment environment) {
+		// AnnotationConfigApplicationContext 默认实现了顶层接口ResourceLoader
 		this(registry, useDefaultFilters, environment, (registry instanceof ResourceLoader ? (ResourceLoader) registry : null));
 	}
 
@@ -158,15 +160,21 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		this.registry = registry;
 
 		// useDefaultFilters默认为true，表示会初始化默认的扫描规则.
-		/** 在进行组件扫描时，会根据includeFilters和execludeFilters中配置的规则进行候选bean的扫描. */
+		/**
+		 * 在进行组件扫描时，会根据includeFilters和execludeFilters中配置的规则进行候选bean的扫描.
+		 */
 		if (useDefaultFilters) {
 			registerDefaultFilters();
 		}
 
-		/** 设置默认的环境信息，默认为：StandardEnvironment */
+		/**
+		 * 设置默认的环境信息，默认为：StandardEnvironment
+		 */
 		setEnvironment(environment);
 
-		/** 设置默认的ResourceLoader，默认为：AnnotationConfigApplicationContext. */
+		/**
+		 * 设置默认的ResourceLoader，默认为：AnnotationConfigApplicationContext.
+		 */
 		setResourceLoader(resourceLoader);
 	}
 

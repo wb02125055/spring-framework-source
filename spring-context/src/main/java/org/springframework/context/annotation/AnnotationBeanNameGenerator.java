@@ -16,10 +16,6 @@
 
 package org.springframework.context.annotation;
 
-import java.beans.Introspector;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -30,6 +26,10 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import java.beans.Introspector;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * {@link org.springframework.beans.factory.support.BeanNameGenerator}
@@ -72,13 +72,14 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 	@Override
 	public String generateBeanName(BeanDefinition definition, BeanDefinitionRegistry registry) {
 		if (definition instanceof AnnotatedBeanDefinition) {
+			// 如果是通过@Component/@Service/@Repository/@Controller注解标注的组件，而且指定了bean的名称，则直接使用指定的名称
 			String beanName = determineBeanNameFromAnnotation((AnnotatedBeanDefinition) definition);
 			if (StringUtils.hasText(beanName)) {
 				// Explicit bean name found.
 				return beanName;
 			}
 		}
-		// Fallback: generate a unique default bean name.
+		// 如果是其他注解标注的bean，则生成默认的bean的名称，通常为类的简单名称首字母小写，即：Introspector.decapitalize(class.getSimpleName())
 		return buildDefaultBeanName(definition, registry);
 	}
 
@@ -96,7 +97,9 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 		for (String type : types) {
 			// 解析出注解中对应的属性及名称.
 			AnnotationAttributes attributes = AnnotationConfigUtils.attributesFor(amd, type);
-			if (attributes != null && isStereotypeWithNameValue(type, amd.getMetaAnnotationTypes(type), attributes)) {
+			// 如果是bean组件是通过@Component/@Service/@Repository/@Controller注解标注的，则bean的名称会使用@Component("componentName")中的名称，即：componentName
+			if (attributes != null &&
+					isStereotypeWithNameValue(type, amd.getMetaAnnotationTypes(type), attributes)) {
 				Object value = attributes.get("value");
 				if (value instanceof String) {
 					String strVal = (String) value;
@@ -120,6 +123,8 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 	 * @param metaAnnotationTypes the names of meta-annotations on the given annotation
 	 * @param attributes the map of attributes for the given annotation
 	 * @return whether the annotation qualifies as a stereotype with component name
+	 *
+	 * 注解的全限定名是否为 "org.springframework.stereotype.Component"
 	 */
 	protected boolean isStereotypeWithNameValue(String annotationType,
 			Set<String> metaAnnotationTypes, @Nullable Map<String, Object> attributes) {
@@ -154,9 +159,13 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 	 * @return the default bean name (never {@code null})
 	 */
 	protected String buildDefaultBeanName(BeanDefinition definition) {
+		// bean定义对应的class名称.
 		String beanClassName = definition.getBeanClassName();
 		Assert.state(beanClassName != null, "No bean class name set");
+
+		// beanClassName: com.wb.spring.async.config.AsyncConfig  shortClassName: asyncConfig
 		String shortClassName = ClassUtils.getShortName(beanClassName);
+
 		// 使用JDK的内省机制，格式化资源名称。格式化的规则：
 		/**
 		 * (1) 如果字符串为null或者长度为0，直接返回原字符串

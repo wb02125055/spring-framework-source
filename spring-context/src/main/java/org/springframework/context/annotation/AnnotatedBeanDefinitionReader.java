@@ -97,13 +97,17 @@ public class AnnotatedBeanDefinitionReader {
 	public AnnotatedBeanDefinitionReader(BeanDefinitionRegistry registry, Environment environment) {
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
 		Assert.notNull(environment, "Environment must not be null");
+
+		// 初始化BeanDefinitionRegistry
 		this.registry = registry;
+
 		// 初始化用于处理条件注解的对象，environment默认为StandardEnvironment
 		/**
 		 * 在创建ConditionEvaluator的时候，会去初始化ConditionContextImpl上下文。
 		 * 里面会持有(registry,beanFactory,environment,resourceLoader,classLoader的引用)
 		 */
 		this.conditionEvaluator = new ConditionEvaluator(registry, environment, null);
+
 		// 注册注解版的后置处理器.
 		AnnotationConfigUtils.registerAnnotationConfigProcessors(this.registry);
 	}
@@ -272,15 +276,19 @@ public class AnnotatedBeanDefinitionReader {
 
 		// 给Bean定义中注册回调supplier回调方法
 		abd.setInstanceSupplier(instanceSupplier);
-		// 默认实现类为：AnnotationScopeMetadataResolver
+
+		// 默认实现类为：AnnotationScopeMetadataResolver，解析@Scope注解的元信息
 		ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(abd);
+
 		// 设置bean的作用域，未设置默认为'singleton'
 		abd.setScope(scopeMetadata.getScopeName());
+
 		// 获取Bean的名称。如果传入的name为null。则使用默认的Bean Name生成器AnnotationBeanNameGenerator生成bean的名称.根据内省操作获取的bean名称.
 		String beanName = (name != null ? name : this.beanNameGenerator.generateBeanName(abd, this.registry));
 
 		// 解析公共注解上面的元数据信息 例如：@DependsOn， @Lazy，@Primary，@DependsOn，@Description
 		AnnotationConfigUtils.processCommonDefinitionAnnotations(abd);
+
 		// 如果使用new AnnotationConfigApplicationContext(Class<?> clazz)创建的bean容器，
 		//    则此处的qualifiers和下面的definitionCustomizers都默认为null
 		if (qualifiers != null) {

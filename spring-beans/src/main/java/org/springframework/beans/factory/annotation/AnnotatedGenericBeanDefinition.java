@@ -61,6 +61,7 @@ public class AnnotatedGenericBeanDefinition extends GenericBeanDefinition implem
 	public AnnotatedGenericBeanDefinition(Class<?> beanClass) {
 		// 调用父类AbstractBeanDefinition设置Bean的类型
 		setBeanClass(beanClass);
+
 		// 初始化默认的注解元数据对象
 		// 该对象中提供了一系列用于获取类上注解元数据的方法
 		this.metadata = new StandardAnnotationMetadata(beanClass, true);

@@ -113,7 +113,6 @@ public class InjectionMetadata {
 		return (metadata == null || metadata.targetClass != clazz);
 	}
 
-
 	/**
 	 * A single injected element.
 	 */
@@ -123,6 +122,7 @@ public class InjectionMetadata {
 
 		protected final boolean isField;
 
+		// 用来完成setter和getter操作的.
 		@Nullable
 		protected final PropertyDescriptor pd;
 

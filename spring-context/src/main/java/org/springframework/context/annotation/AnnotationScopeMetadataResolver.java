@@ -38,8 +38,16 @@ import org.springframework.util.Assert;
  */
 public class AnnotationScopeMetadataResolver implements ScopeMetadataResolver {
 
+	/**
+	 * 在某些情况下，bean是存在状态的，在某些时刻bean还无法真实创建，只能用代理去代替。真实使用的时候才会去真正创建bean实例，
+	 * 这个模式表示的就是在需要使用bean的时候，创建bean所使用的方式. Interface或者target_class，interface表示使用基于接口
+	 * 的jdk动态代理，target_class表示使用cglib动态代理生成目标类.
+	 */
 	private final ScopedProxyMode defaultProxyMode;
 
+	/**
+	 * 方法或者类上的Scope
+	 */
 	protected Class<? extends Annotation> scopeAnnotationType = Scope.class;
 
 
@@ -76,7 +84,7 @@ public class AnnotationScopeMetadataResolver implements ScopeMetadataResolver {
 
 	@Override
 	public ScopeMetadata resolveScopeMetadata(BeanDefinition definition) {
-		/** ScopeMetadata中会定义bean的默认作用域[默认为singleton]和作用域的模式[默认为no] */
+		// ScopeMetadata中会定义bean的默认作用域[默认为singleton]和作用域的模式[默认为no]
 		ScopeMetadata metadata = new ScopeMetadata();
 		if (definition instanceof AnnotatedBeanDefinition) {
 			AnnotatedBeanDefinition annDef = (AnnotatedBeanDefinition) definition;

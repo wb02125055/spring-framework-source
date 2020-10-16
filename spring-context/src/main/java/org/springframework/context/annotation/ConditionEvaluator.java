@@ -47,6 +47,9 @@ import java.util.List;
  */
 class ConditionEvaluator {
 
+	/**
+	 * 用于实现Condition注解的逻辑
+	 */
 	private final ConditionContextImpl context;
 
 
@@ -78,6 +81,23 @@ class ConditionEvaluator {
 	 * @param metadata the meta data
 	 * @param phase the phase of the call
 	 * @return if the item should be skipped
+	 *
+	 * // 1.自定义Condition
+	 * public class I18nCondition implements Condition {
+	 * 		@Override
+	 * 		public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+	 * 			// ...
+	 * 		 	return true;
+	 * 		}
+	 * }
+	 *
+	 * // 2.自定义注解
+	 * @Target({ElementType.TYPE, ElementType.METHOD})
+	 * @Retention(RetentionPolicy.RUNTIME)
+	 * @Documented
+	 * @Conditional(I18nCondition.class)
+	 * public @interface I18n {
+	 * }
 	 */
 	public boolean shouldSkip(@Nullable AnnotatedTypeMetadata metadata, @Nullable ConfigurationPhase phase) {
 		// 如果当前的配置类中没有使用@Conditional注解，直接返回false
@@ -101,6 +121,7 @@ class ConditionEvaluator {
 		for (String[] conditionClasses : getConditionClasses(metadata)) {
 			// 条件类的class名称.
 			for (String conditionClass : conditionClasses) {
+				// 获取指定类中对应的condition列表
 				Condition condition = getCondition(conditionClass, this.context.getClassLoader());
 				conditions.add(condition);
 			}
@@ -124,11 +145,13 @@ class ConditionEvaluator {
 				return true;
 			}
 		}
+		// shouldSkip() 返回了false，表示不能跳过当前Bean的注册
 		return false;
 	}
 
 	@SuppressWarnings("unchecked")
 	private List<String[]> getConditionClasses(AnnotatedTypeMetadata metadata) {
+		// metadata默认为StandardAnnotationMetadata
 		MultiValueMap<String, Object> attributes = metadata.getAllAnnotationAttributes(Conditional.class.getName(), true);
 		Object values = (attributes != null ? attributes.get("value") : null);
 		// 返回@Conditional中的value对应的条件类的类名称。可以指定多个，为一个数组类型.
@@ -136,7 +159,9 @@ class ConditionEvaluator {
 	}
 
 	private Condition getCondition(String conditionClassName, @Nullable ClassLoader classloader) {
+		// @Condition(I18nCondition.class) 加载I18nCondition的class
 		Class<?> conditionClass = ClassUtils.resolveClassName(conditionClassName, classloader);
+		// 实例化自定义的条件类.
 		return (Condition) BeanUtils.instantiateClass(conditionClass);
 	}
 
@@ -175,6 +200,8 @@ class ConditionEvaluator {
 			if (source instanceof ConfigurableListableBeanFactory) {
 				return (ConfigurableListableBeanFactory) source;
 			}
+
+			// AnnotationConfigApplicationContext默认实现的接口为ConfigurableApplicationContext
 			if (source instanceof ConfigurableApplicationContext) {
 				return (((ConfigurableApplicationContext) source).getBeanFactory());
 			}

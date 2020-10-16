@@ -77,7 +77,7 @@ public class OrderComparator implements Comparator<Object> {
 		if (p1 && !p2) {
 			return -1;
 		}
-		// 如果o2实现了PriorityOrdered接口，而o1未实现，则o2排在千面
+		// 如果o2实现了PriorityOrdered接口，而o1未实现，则o2排在前面
 		else if (p2 && !p1) {
 			return 1;
 		}
