@@ -143,7 +143,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 				// 实例化命名空间解析类的实例.
 				NamespaceHandler namespaceHandler = (NamespaceHandler) BeanUtils.instantiateClass(handlerClass);
 
-				// 调用命名空间解析类的init方法.去加载所有的用于解析自定义标签的Parser类.
+				// 回调命名空间解析类的init方法.去加载所有的用于解析自定义标签的Parser类.
 				namespaceHandler.init();
 
 				// 将其放入到handlerMapping中
