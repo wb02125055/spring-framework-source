@@ -34,6 +34,8 @@ public interface BeanReference extends BeanMetadataElement {
 
 	/**
 	 * Return the target bean name that this reference points to (never {@code null}).
+	 *
+	 * 代表bean引用中目标bean的名称.
 	 */
 	String getBeanName();
 

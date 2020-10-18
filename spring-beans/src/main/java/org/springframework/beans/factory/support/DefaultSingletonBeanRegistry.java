@@ -64,15 +64,15 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
 	/**
-	 * Cache of singleton factories: bean name to ObjectFactory.
-	 * 三级缓存：保存对单实例bean的包装对象
-	 */
-	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
-	/**
 	 * Cache of early singleton objects: bean name to bean instance.
 	 * 二级缓存：提前曝光的单例对象的缓存，用于检测循环引用
 	 */
 	private final Map<String, Object> earlySingletonObjects = new HashMap<>(16);
+	/**
+	 * Cache of singleton factories: bean name to ObjectFactory.
+	 * 三级缓存：保存对单实例bean的包装对象
+	 */
+	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
 
 	/**
 	 * 按照注册顺序所保存的已经注册的单例对象的名称
@@ -134,13 +134,16 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	protected void addSingleton(String beanName, Object singletonObject) {
 		synchronized (this.singletonObjects) {
-			/** 将创建好的单实例bean放入到单例缓存池中 */
+			// 将创建好的单实例bean放入到单例缓存池中
 			this.singletonObjects.put(beanName, singletonObject);
-			/** 从三级缓存中删除 */
+
+			// 从三级缓存中删除
 			this.singletonFactories.remove(beanName);
-			/** 从二级缓存中删除(早期对象：已经实例化，但是未完成属性赋值的对象) */
+
+			// 从二级缓存中删除(早期对象：已经实例化，但是未完成属性赋值的对象)
 			this.earlySingletonObjects.remove(beanName);
-			/** 保存到已注册单实例Bean名称集合中 */
+
+			// 保存到已注册单实例Bean名称集合中
 			this.registeredSingletons.add(beanName);
 		}
 	}
@@ -156,13 +159,15 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	protected void addSingletonFactory(String beanName, ObjectFactory<?> singletonFactory) {
 		Assert.notNull(singletonFactory, "Singleton factory must not be null");
 		synchronized (this.singletonObjects) {
-			/** 如果当前的单实例缓存池中还没有beanName对应的单实例bean */
+			// 如果当前的单实例缓存池中还没有beanName对应的单实例bean
 			if (!this.singletonObjects.containsKey(beanName)) {
-				/** 将当前beanName对应的ObjectFactory放入到三级缓存singletonFactories中 */
+				// 将当前beanName对应的ObjectFactory放入到三级缓存singletonFactories中
 				this.singletonFactories.put(beanName, singletonFactory);
-				/** 从早期的单例对象缓存中移除beanName对应的bean实例 */
+
+				// 从早期的单例对象缓存中移除beanName对应的bean实例
 				this.earlySingletonObjects.remove(beanName);
-				/** 将当前的beanName保存到已经注册的bean对应的Set集合中，标识其已经注册过 */
+
+				// 将当前的beanName保存到已经注册的bean对应的Set集合中，标识其已经注册过
 				this.registeredSingletons.add(beanName);
 			}
 		}

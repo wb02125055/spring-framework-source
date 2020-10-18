@@ -149,6 +149,10 @@ public abstract class AnnotationConfigUtils {
 	 * that this registration was triggered from. May be {@code null}.
 	 * @return a Set of BeanDefinitionHolders, containing all bean definitions
 	 * that have actually been registered by this call
+	 *
+	 * 为什么需要返回值？
+	 *     在xml方式配置bean的时候，如果开启了注解驱动，需要在解析xml标签的时候得到这些默认的后置处理器，做下一步的操作.
+	 *     @see ComponentScanBeanDefinitionParser
 	 */
 	public static Set<BeanDefinitionHolder> registerAnnotationConfigProcessors(
 			BeanDefinitionRegistry registry, @Nullable Object source) {

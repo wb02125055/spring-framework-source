@@ -17,6 +17,7 @@
 package org.springframework.beans.factory.parsing;
 
 import org.springframework.core.io.Resource;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 /**

@@ -38,6 +38,7 @@ public class CompositeComponentDefinition extends AbstractComponentDefinition {
 	@Nullable
 	private final Object source;
 
+	// 通过xml配置文件中的标签解析出来的bean定义
 	private final List<ComponentDefinition> nestedComponents = new ArrayList<>();
 
 

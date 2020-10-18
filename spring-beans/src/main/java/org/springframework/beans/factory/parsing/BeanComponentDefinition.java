@@ -64,11 +64,15 @@ public class BeanComponentDefinition extends BeanDefinitionHolder implements Com
 	 * Create a new BeanComponentDefinition for the given bean.
 	 * @param beanDefinitionHolder the BeanDefinitionHolder encapsulating
 	 * the bean definition as well as the name of the bean
+	 *
+	 * BeanDefinitionHolder中的属性：beanDefinition, beanName, alias
 	 */
 	public BeanComponentDefinition(BeanDefinitionHolder beanDefinitionHolder) {
 		super(beanDefinitionHolder);
 
+		// 内部bean
 		List<BeanDefinition> innerBeans = new ArrayList<>();
+		// bean的应用
 		List<BeanReference> references = new ArrayList<>();
 		PropertyValues propertyValues = beanDefinitionHolder.getBeanDefinition().getPropertyValues();
 		for (PropertyValue propertyValue : propertyValues.getPropertyValues()) {

@@ -80,9 +80,10 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 
 	static final String DEFAULT_RESOURCE_PATTERN = "**/*.class";
 
-
 	protected final Log logger = LogFactory.getLog(getClass());
-
+	/**
+	 * 默认的资源匹配规则
+	 */
 	private String resourcePattern = DEFAULT_RESOURCE_PATTERN;
 	/**
 	 * 保存满足过滤规则的注解
@@ -139,10 +140,13 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 * @see #registerDefaultFilters()
 	 */
 	public ClassPathScanningCandidateComponentProvider(boolean useDefaultFilters, Environment environment) {
+		// 是否使用默认的过滤规则，默认过滤规则中是包括所有从@Component注解继承下来的注解的
 		if (useDefaultFilters) {
 			registerDefaultFilters();
 		}
+		// 设置环境信息
 		setEnvironment(environment);
+		// 设置资源加载器
 		setResourceLoader(null);
 	}
 

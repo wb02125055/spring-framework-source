@@ -18,4 +18,16 @@
 	<!--</bean>-->
 
 	<context:property-placeholder location="classpath:module2.properties" />
+	<context:component-scan base-package="com.wb.spring"
+							annotation-config="true"
+							use-default-filters="false"
+							name-generator="org.springframework.context.annotation.AnnotationBeanNameGenerator"
+							scope-resolver="org.springframework.context.annotation.AnnotationScopeMetadataResolver"
+							resource-pattern="**/*.class"
+							scoped-proxy="no">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="regex" expression=".service.*"/>
+	</context:component-scan>
+	<context:annotation-config />
 </beans>
