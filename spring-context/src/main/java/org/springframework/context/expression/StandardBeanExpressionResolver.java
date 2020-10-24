@@ -49,10 +49,10 @@ import org.springframework.util.StringUtils;
  */
 public class StandardBeanExpressionResolver implements BeanExpressionResolver {
 
-	/** Default expression prefix: "#{". */
+	/** SPEL默认表达式前缀 */
 	public static final String DEFAULT_EXPRESSION_PREFIX = "#{";
 
-	/** Default expression suffix: "}". */
+	/** SPEL默认表达式后缀 */
 	public static final String DEFAULT_EXPRESSION_SUFFIX = "}";
 
 

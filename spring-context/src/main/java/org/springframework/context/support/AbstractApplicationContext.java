@@ -766,7 +766,8 @@ public abstract class AbstractApplicationContext
 		// 设置SPEL表达式解析器，用来支持Spring的SPEL表达式
 		beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
 
-		// <property ref="xxx" /> 解析转换xxx为对象
+		// 添加属性编辑注册器。例如一个字符串类型的地址需要转换为一个Address对象，可以使用该功能.
+		// 可参考示例：spring-source-study模块下的com.wb.spring.propertyeditor包下的示例程序
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
 		// 添加bean的后置处理器。此处添加的是Spring自己的后置处理器，用来回调bean所实现的aware接口中的方法.

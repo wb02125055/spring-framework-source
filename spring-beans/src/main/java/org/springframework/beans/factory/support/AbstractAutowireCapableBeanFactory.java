@@ -1781,7 +1781,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		else {
 			original = Arrays.asList(pvs.getPropertyValues());
 		}
-		/** 获取自定义的属性类型转换器 */
+		// 获取自定义的属性类型转换器
 		TypeConverter converter = getCustomTypeConverter();
 		if (converter == null) {
 			converter = bw;
@@ -1799,16 +1799,19 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			else {
 				// 属性名
 				String propertyName = pv.getName();
+
 				// 属性值
 				Object originalValue = pv.getValue();
+
 				// 解析之后的属性值
 				Object resolvedValue = valueResolver.resolveValueIfNecessary(pv, originalValue);
-				/** 转换之后的属性值。可以通过自定义ConversionService进行属性值的转换 */
+
+				// 转换之后的属性值。可以通过自定义ConversionService进行属性值的转换
 				Object convertedValue = resolvedValue;
 				boolean convertible = bw.isWritableProperty(propertyName) &&
 						!PropertyAccessorUtils.isNestedOrIndexedProperty(propertyName);
 				if (convertible) {
-					// 如果需要进行属性值的转换，则进行属性值的转换
+					// 如果需要进行属性值的转换，则通过自定义的属性编辑器CustomerEditor进行属性值的转换
 					convertedValue = convertForProperty(resolvedValue, propertyName, bw, converter);
 				}
 				// Possibly store converted value in merged bean definition,
@@ -1853,6 +1856,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			@Nullable Object value, String propertyName, BeanWrapper bw, TypeConverter converter) {
 
 		if (converter instanceof BeanWrapperImpl) {
+			// 执行自定义editor
 			return ((BeanWrapperImpl) converter).convertForProperty(value, propertyName);
 		}
 		else {
@@ -1900,6 +1904,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object wrappedBean = bean;
 		if (mbd == null || !mbd.isSynthetic()) {
 			/** 调用Bean对象的postProcessBeforeInitialization方法，此处会执行标注@PostConstruct注解的方法 */
+			// 此处会调用ApplicationContextAwareProcessor执行其他的aware方法.
 			wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
 		}
 		try {
