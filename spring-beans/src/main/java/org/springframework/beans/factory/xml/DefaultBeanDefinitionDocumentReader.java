@@ -206,7 +206,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 			}
 		}
 		else {
-			// 如果不是spring中的标签，则作为自定义标签进行解析.
+			// 如果不是spring默认的命名空间，则作为扩展标签进行解析.
 			delegate.parseCustomElement(root);
 		}
 	}

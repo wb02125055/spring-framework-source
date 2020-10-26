@@ -310,7 +310,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			parser.parse(candidates);
 
 			// 做一些配置类的基本校验
-			// 	 例如：(1) 标注@Configuration的类不能是final类型的; (2)
+			// 	 例如：(1) 标注@Configuration的类不能是final类型的; (2)标注@Bean的方法是否为静态的等等。。。
 			parser.validate();
 
 			Set<ConfigurationClass> configClasses = new LinkedHashSet<>(parser.getConfigurationClasses());
@@ -322,11 +322,13 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 						registry, this.sourceExtractor, this.resourceLoader, this.environment,
 						this.importBeanNameGenerator, parser.getImportRegistry());
 			}
+
 			// 加载配置类中的bean定义，包括执行BeanDefinitionRegistrar接口的registryBeanDefinitions方法给容器中注册自定义的组件.
 			this.reader.loadBeanDefinitions(configClasses);
 			alreadyParsed.addAll(configClasses);
 
 			candidates.clear();
+
 			if (registry.getBeanDefinitionCount() > candidateNames.length) {
 				String[] newCandidateNames = registry.getBeanDefinitionNames();
 				Set<String> oldCandidateNames = new HashSet<>(Arrays.asList(candidateNames));

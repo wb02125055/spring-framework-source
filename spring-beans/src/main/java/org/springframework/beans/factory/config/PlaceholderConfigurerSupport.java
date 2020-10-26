@@ -83,8 +83,10 @@ import org.springframework.util.StringValueResolver;
  * @author Chris Beams
  * @author Juergen Hoeller
  * @since 3.1
- * @see PropertyPlaceholderConfigurer
+ * @see ;
  * @see org.springframework.context.support.PropertySourcesPlaceholderConfigurer
+ *
+ * 用来处理xml中的占位符.
  */
 public abstract class PlaceholderConfigurerSupport extends PropertyResourceConfigurer
 		implements BeanNameAware, BeanFactoryAware {

@@ -1,5 +1,6 @@
 package com.wb.spring.beandefinitionparser.config;
 
+import com.wb.spring.beandefinitionparser.domain.User;
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 
 /**
@@ -9,6 +10,6 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 public class MyTagNamespaceHandler extends NamespaceHandlerSupport {
 	@Override
 	public void init() {
-		registerBeanDefinitionParser("user", new UserBeanDefinitionParser());
+		registerBeanDefinitionParser("user", new UserBeanDefinitionParser(User.class));
 	}
 }

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  *
  * 测试Bean的后置处理器
  */
-//@Component
+@Component
 public class MyBeanPostProcessor extends InstantiationAwareBeanPostProcessorAdapter
 		implements BeanNameAware,BeanFactoryAware,ApplicationContextAware,InitializingBean,DisposableBean {
 
@@ -65,6 +65,9 @@ public class MyBeanPostProcessor extends InstantiationAwareBeanPostProcessorAdap
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 		System.out.println("postProcessBeforeInitialization...");
+		if (bean instanceof MyAware) {
+			((MyAware) bean).setMy("aaaa");
+		}
 		return super.postProcessBeforeInitialization(bean, beanName);
 	}
 

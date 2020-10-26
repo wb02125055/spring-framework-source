@@ -57,7 +57,7 @@ final class PostProcessorRegistrationDelegate {
 		if (beanFactory instanceof BeanDefinitionRegistry) {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 
-			/** 用于存放普通的bean工厂的后置处理器 */
+			// 用于存放普通的bean工厂的后置处理器
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
 
 			/**
@@ -98,7 +98,7 @@ final class PostProcessorRegistrationDelegate {
 				if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
 					// 获取ppName对应的Bean实例，并添加到当前要执行的currentRegistryProcessors中
 
-					/** 此处会去创建容器中默认后置处理器对应的单实例bean */
+					// 此处会去创建容器中默认后置处理器对应的单实例bean
 					// 此处的beanFactory.getBean会根据Bean的类型去创建Bean工厂后置处理器对象，有Bean的创建过程。
 					currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
 					// 把将要执行的bean的名称加入到processedBeans中，后续后判断是否已经执行。避免重复执行.
@@ -164,11 +164,11 @@ final class PostProcessorRegistrationDelegate {
 				currentRegistryProcessors.clear();
 			}
 
-			// Now, invoke the postProcessBeanFactory callback of all processors handled so far.
 			// 执行所有BeanDefinitionRegistryPostProcessor接口的postProcessBeanFactory方法
 			// 加载bean定义之后.但是实例化bean实例之前
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
-			// 执行所有普通的BeanFactoryPostProcessor的postProcessBeanFactory方法.
+
+			// 执行所有普通的BeanFactoryPostProcessor的postProcessBeanFactory方法。这些BeanFactoryPostProcessor是从方法传进来的.
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
 		}
 

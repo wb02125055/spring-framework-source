@@ -780,32 +780,24 @@ public abstract class AbstractApplicationContext
 		*   而是需要通过setEnvironment方法进行注入，下面的其他接口都类似.
 		*/
 		beanFactory.ignoreDependencyInterface(EnvironmentAware.class);
-
 		// 可以通过实现EmbeddedValueResolverAware接口来获取String类型值的解析器
 		beanFactory.ignoreDependencyInterface(EmbeddedValueResolverAware.class);
-
 		// 资源加载器，例如使用：@Autowired ResourceLoaderAware aware; 将不会被注入
 		beanFactory.ignoreDependencyInterface(ResourceLoaderAware.class);
-
 		// 事件发布器
 		beanFactory.ignoreDependencyInterface(ApplicationEventPublisherAware.class);
-
 		// 消息资源
 		beanFactory.ignoreDependencyInterface(MessageSourceAware.class);
-
 		// 应用的上下文信息
 		beanFactory.ignoreDependencyInterface(ApplicationContextAware.class);
 
-		// 注册一些可以自动装配的接口。 当类型为dependencyType时， 注入autowiredValue
+		// 注册一些可以自动装配的接口。 当类型为dependencyType时， 注入autowiredValue。为了解决一个类型有多个子类实现时，优先注入那个子类实现的问题。
 		// 例如下面第一个，当注入类型为BeanFactory时，注入的值为beanFactory，默认为DefaultListableBeanFactory
 		beanFactory.registerResolvableDependency(BeanFactory.class, beanFactory);
-
 		// 当注入类型为ResourceLoader时，注入的值为ApplicationContext
 		beanFactory.registerResolvableDependency(ResourceLoader.class, this);
-
-		// 当注如类型为ApplicationEventPublisher时，注入的值为ApplicationContext
+		// 当注入类型为ApplicationEventPublisher时，注入的值为ApplicationContext
 		beanFactory.registerResolvableDependency(ApplicationEventPublisher.class, this);
-
 		// 当注入的类型为ApplicationContext时，注入的值为ApplicationContext.
 		beanFactory.registerResolvableDependency(ApplicationContext.class, this);
 
@@ -815,7 +807,12 @@ public abstract class AbstractApplicationContext
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found.
 		// 如果bean工厂中存在着名称为loadTimeWeaver的bean定义，则给bean工厂中加入LoaderTimeWeaverAwareProcessor后置处理器
-		//   用来完成AOP的静态代理解析-代码织入
+		// 补充：1、增加对AspectJ的支持，在Java中织入分为3种：(1) 编译期织入; (2) 类加载期织入; (3) 运行期织入。编译期织入指的是在java编译期，
+		//         采用特殊的编译器，将切面织入到java类中；类加载期织入则指的是通过特殊的类加载器，在字节码加载到JVM时，织入切面；运行期织入则是
+		//         通过采用cglib或者jdk进行切面的织入。
+		//      2、aspectJ中提供了两种方式：
+		//         (1) 通过特殊编译器，在编译期，将aspectJ语言编写的切面类织入到java类中；
+		//         (2) 类加载期织入，就是通过下面的LoadTimeWeaving
 		if (beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
 			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
 			// Set a temporary ClassLoader for type matching.

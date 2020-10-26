@@ -162,7 +162,7 @@ class ConfigurationClassParser {
 						"Failed to parse configuration class [" + bd.getBeanClassName() + "]", ex);
 			}
 		}
-
+		// 处理延迟ImportSelector
 		this.deferredImportSelectorHandler.process();
 	}
 

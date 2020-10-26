@@ -20,4 +20,5 @@
 
 <!--	<import resource="test-${menu.env}.xml" />-->
 	<import resource="test-prod.xml" />
+	<context:annotation-config />
 </beans>

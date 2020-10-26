@@ -531,13 +531,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			// 删除之前工厂bean缓存中的工厂bean对象，重新进行实例化.
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
 		}
-		/** 创建Bean的实例，并且包装为一个包装对象返回. */
+		// 创建Bean的实例，并且包装为一个包装对象返回.
 		if (instanceWrapper == null) {
 			// 使用策略方法创建实例，包括：工厂方法，构造函数注入，简单初始化.
 			// TODO 里面调用的方法超级长
 			instanceWrapper = createBeanInstance(beanName, mbd, args);
 		}
-		/** 获取新创建的bean对象和bean所对应的class类型 */
+		// 获取新创建的bean对象和bean所对应的class类型
 		final Object bean = instanceWrapper.getWrappedInstance();
 		Class<?> beanType = instanceWrapper.getWrappedClass();
 
@@ -1479,13 +1479,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			pvs = newPvs;
 		}
 
-		/** 当前bean是否有InstantiationAwareBeanPostProcessor类型的后置处理器 */
+		// 当前bean是否有InstantiationAwareBeanPostProcessor类型的后置处理器
 		boolean hasInstAwareBpps = hasInstantiationAwareBeanPostProcessors();
-		/** 自动装配时需要进行依赖的检查 */
+		// 自动装配时需要进行依赖的检查
 		boolean needsDepCheck = (mbd.getDependencyCheck() != AbstractBeanDefinition.DEPENDENCY_CHECK_NONE);
 
 		PropertyDescriptor[] filteredPds = null;
-		/** 如果存在着InstantiationAwareBeanPostProcessor【继承自BeanPostProcessor】类型的后置处理器 */
+		// 如果存在着InstantiationAwareBeanPostProcessor【继承自BeanPostProcessor】类型的后置处理器
 		if (hasInstAwareBpps) {
 			if (pvs == null) {
 				pvs = mbd.getPropertyValues();
@@ -1510,7 +1510,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				}
 			}
 		}
-		/** 如果需要进行依赖的检查【包括简单类型和对象类型】 */
+		// 如果需要进行依赖的检查【包括简单类型和对象类型】
 		if (needsDepCheck) {
 			if (filteredPds == null) {
 				/**
@@ -1706,7 +1706,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	protected void checkDependencies(
 			String beanName, AbstractBeanDefinition mbd, PropertyDescriptor[] pds, @Nullable PropertyValues pvs)
 			throws UnsatisfiedDependencyException {
-		/** 获取bean定义中的依赖检查模式。有三种：所有属性都检查、只检查简单类型、只检查对象类型 */
+		// 获取bean定义中的依赖检查模式。有三种：所有属性都检查、只检查简单类型、只检查对象类型
 		int dependencyCheck = mbd.getDependencyCheck();
 		for (PropertyDescriptor pd : pds) {
 			/** 如果当前的属性包含setter方法 && (属性值(key-value)不为null || 属性值集合中不包含当前的属性) */
@@ -2021,10 +2021,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	protected void invokeCustomInitMethod(String beanName, final Object bean, RootBeanDefinition mbd)
 			throws Throwable {
-		/** 获取自定义的初始化方法名称 */
+		// 获取自定义的初始化方法名称
 		String initMethodName = mbd.getInitMethodName();
 		Assert.state(initMethodName != null, "No init method set");
-		/** 通过方法名称获取对应的方法对象. */
+		// 通过方法名称获取对应的方法对象
 		Method initMethod = (mbd.isNonPublicAccessAllowed() ?
 				BeanUtils.findMethod(bean.getClass(), initMethodName) :
 				ClassUtils.getMethodIfAvailable(bean.getClass(), initMethodName));
