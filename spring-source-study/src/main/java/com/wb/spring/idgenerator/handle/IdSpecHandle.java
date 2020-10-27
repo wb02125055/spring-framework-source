@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import com.wb.spring.idgenerator.db.DbOperator;
 import com.wb.spring.idgenerator.db.MySqlOperator;
 import com.wb.spring.idgenerator.log.IdGeneratorLogger;
-import com.wb.spring.idgenerator.target.SpecGenerator;
+import com.wb.spring.idgenerator.common.SpecGenerator;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;

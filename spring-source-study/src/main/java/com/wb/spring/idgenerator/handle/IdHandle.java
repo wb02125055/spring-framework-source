@@ -1,8 +1,7 @@
 package com.wb.spring.idgenerator.handle;
 
-import com.wb.spring.idgenerator.target.Generator;
-import com.wb.spring.idgenerator.target.SpecGenerator;
-import groovyjarjarpicocli.CommandLine;
+import com.wb.spring.idgenerator.common.Generator;
+import com.wb.spring.idgenerator.common.SpecGenerator;
 
 import java.util.Map;
 
