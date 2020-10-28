@@ -119,7 +119,8 @@ final class PostProcessorRegistrationDelegate {
 			currentRegistryProcessors.clear();
 
 			// 查找所有实现了BeanDefinitionRegistryPostProcessor接口的实现类
-			// 重复查找是因为上面执行完了所有的BeanDefinitionRegistryPostProcessor类之后，可能又新增了其他的BeanDefinitionRegistryPostProcessor.
+			// 重复查找是因为上面执行完了所有的BeanDefinitionRegistryPostProcessor类之后，可能又新增了其他的BeanDefinitionRegistryPostProcessor。
+			//    比如：有一个自定义的BeanDefinitionRegistryPostProcessor中实现了PriorityOrdered接口之后，同时实现了BeanDefinitionRegistryPostProcessor接口.
 			postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			for (String ppName : postProcessorNames) {
 				// 校验是否实现了Ordered接口，并且之前未执行过
