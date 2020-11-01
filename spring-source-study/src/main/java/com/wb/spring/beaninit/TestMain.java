@@ -22,18 +22,18 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class TestMain {
 	public static void main(String[] args) {
 
-//		AnnotationConfigApplicationContext acx = new AnnotationConfigApplicationContext();
+		AnnotationConfigApplicationContext acx = new AnnotationConfigApplicationContext();
 //		// 注册配置类
-//		acx.register(BeanConfig1.class);
+		acx.register(BeanConfig1.class);
 //		// 刷新容器
-//		acx.refresh();
+		acx.refresh();
 //		Object a = acx.getBean(A.class);
 //		Object b = acx.getBean(B.class);
 //		System.out.println(a);
 //		System.out.println(b);
 
 
-		String property = System.getProperty("user.name");
-		System.out.println(property);
+//		String property = System.getProperty("user.name");
+//		System.out.println(property);
 	}
 }

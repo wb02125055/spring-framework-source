@@ -463,6 +463,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 				if (resource.isReadable()) {
 					try {
 						MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
+						// 判断是否是excludeFilter中需要排除的bean定义或者是否是includeFilter中需要包含的bean定义.
 						if (isCandidateComponent(metadataReader)) {
 							// 根据读取到的配置类上面的元注解信息创建bean定义.
 							ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
@@ -526,11 +527,17 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 * @return whether the class qualifies as a candidate component
 	 */
 	protected boolean isCandidateComponent(MetadataReader metadataReader) throws IOException {
+		// 遍历所有的excludeFilter，如果是需要排除的bean定义，直接返回false
 		for (TypeFilter tf : this.excludeFilters) {
 			if (tf.match(metadataReader, getMetadataReaderFactory())) {
 				return false;
 			}
 		}
+
+		/**
+		* 遍历所有的includeFilter，如果是需要包含的bean定义，则再去根据bean定义对应的元数据信息判断
+		 * 是否标注有@Conditional注解，以及@Conditional注解是否排除了该bean定义
+		 */
 		for (TypeFilter tf : this.includeFilters) {
 			if (tf.match(metadataReader, getMetadataReaderFactory())) {
 				return isConditionMatch(metadataReader);

@@ -44,6 +44,7 @@ final class BeanMethod extends ConfigurationMethod {
 			return;
 		}
 		if (this.configurationClass.getMetadata().isAnnotated(Configuration.class.getName())) {
+			// 不是静态 && 不是final && 不是private修饰的
 			if (!getMetadata().isOverridable()) {
 				// instance @Bean methods within @Configuration classes must be overridable to accommodate CGLIB
 

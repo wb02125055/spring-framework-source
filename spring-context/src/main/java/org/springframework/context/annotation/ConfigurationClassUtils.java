@@ -89,7 +89,10 @@ abstract class ConfigurationClassUtils {
 			return false;
 		}
 
+		//   注意：Spring内部的BeanDefinition默认都是RootBeanDefinition，这个类继承了AbstractBeanDefinition
 		AnnotationMetadata metadata;
+		// 	通过注解扫描得到的BeanDefinition都属于AnnotatedGenericBeanDefinition，实现了AnnotatedBeanDefinition接口.
+		// 此处判断当前的BeanDefinition是否属于AnnotatedBeanDefinition。
 		if (beanDef instanceof AnnotatedBeanDefinition &&
 				className.equals(((AnnotatedBeanDefinition) beanDef).getMetadata().getClassName())) {
 			// Can reuse the pre-parsed metadata from the given BeanDefinition...
@@ -98,6 +101,7 @@ abstract class ConfigurationClassUtils {
 		else if (beanDef instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) beanDef).hasBeanClass()) {
 			// Check already loaded Class if present...
 			// since we possibly can't even load the class file for this Class.
+			// 注意：此处的处理逻辑和5.2的Spring不同.
 			Class<?> beanClass = ((AbstractBeanDefinition) beanDef).getBeanClass();
 			metadata = new StandardAnnotationMetadata(beanClass, true);
 		}
@@ -118,7 +122,7 @@ abstract class ConfigurationClassUtils {
 		if (isFullConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
-		// lite: 类似
+		// lite: 类似，标注有@Component，@ComponentScan，@Import，@ImportSource的类就满足isLiteConfiguration的条件.
 		else if (isLiteConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}
@@ -179,18 +183,15 @@ abstract class ConfigurationClassUtils {
 			return false;
 		}
 
-		// Any of the typical annotations found?
-
 		// 如果带有：@Component @ComponentScan @Import @ImportResource注解，则表示是一种类似于配置类的候选配置
-		//   lite: 类似
+		//     lite: 类似
 		for (String indicator : candidateIndicators) {
 			if (metadata.isAnnotated(indicator)) {
 				return true;
 			}
 		}
-
-		// Finally, let's look for @Bean methods...
 		try {
+			// 查看当前的bean定义中是否包括标注有@Bean注解的方法.
 			return metadata.hasAnnotatedMethods(Bean.class.getName());
 		}
 		catch (Throwable ex) {

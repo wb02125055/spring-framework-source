@@ -214,6 +214,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			throw new IllegalStateException(
 					"postProcessBeanFactory already called on this post-processor against " + registry);
 		}
+		// 将马上要处理的registry对象的唯一标识id放入到已经处理的集合对象中，防止重复执行
 		this.registriesPostProcessed.add(registryId);
 
 		// 解析配置类中的Bean定义.
@@ -247,12 +248,13 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	 * {@link Configuration} classes.
 	 */
 	public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
-		// 用来保存解析出来的bean定义
+		// 用来保存解析出来的bean定义，BeanDefinitionHolder是一个Bean定义的包装对象，里面主要包括了BeanDefinition,BeanName,Alias等信息
 		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
 
 		// 获取bean定义注册中心中的所有bean的名称.
 		String[] candidateNames = registry.getBeanDefinitionNames();
 
+		// 遍历所有的BeanDefinition的名称，筛选出带有注解的BeanDefinition
 		for (String beanName : candidateNames) {
 			BeanDefinition beanDef = registry.getBeanDefinition(beanName);
 			if (ConfigurationClassUtils.isFullConfigurationClass(beanDef) ||
