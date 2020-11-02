@@ -13,6 +13,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class TestMain {
 	public static void main(String[] args) {
 		ConfigurableApplicationContext acx = new AnnotationConfigApplicationContext(ComponentScanConfig.class);
+		String[] beanDefinitionNames = acx.getBeanDefinitionNames();
+		for (String beanDefinitionName : beanDefinitionNames) {
+			System.out.println(beanDefinitionName);
+		}
 		acx.close();
 	}
 }
