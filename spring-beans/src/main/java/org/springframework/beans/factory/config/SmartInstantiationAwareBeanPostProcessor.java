@@ -38,6 +38,8 @@ import org.springframework.lang.Nullable;
 public interface SmartInstantiationAwareBeanPostProcessor extends InstantiationAwareBeanPostProcessor {
 
 	/**
+	 * 推测bean的类型，在bean创建之前获取bean的class类型
+	 *
 	 * Predict the type of the bean to be eventually returned from this
 	 * processor's {@link #postProcessBeforeInstantiation} callback.
 	 * <p>The default implementation returns {@code null}.
@@ -52,6 +54,9 @@ public interface SmartInstantiationAwareBeanPostProcessor extends InstantiationA
 	}
 
 	/**
+	 *
+	 * 解析及推断构造函数
+	 *
 	 * Determine the candidate constructors to use for the given bean.
 	 * <p>The default implementation returns {@code null}.
 	 * @param beanClass the raw class of the bean (never {@code null})
@@ -66,6 +71,9 @@ public interface SmartInstantiationAwareBeanPostProcessor extends InstantiationA
 	}
 
 	/**
+	 *
+	 * 用来解决循环依赖问题，通过该方法可以提前暴露一个早期的bean对象
+	 *
 	 * Obtain a reference for early access to the specified bean,
 	 * typically for the purpose of resolving a circular reference.
 	 * <p>This callback gives post-processors a chance to expose a wrapper

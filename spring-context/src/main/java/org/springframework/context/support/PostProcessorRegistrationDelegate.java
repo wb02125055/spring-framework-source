@@ -259,16 +259,17 @@ final class PostProcessorRegistrationDelegate {
 		// a bean is created during BeanPostProcessor instantiation, i.e. when
 		// a bean is not eligible for getting processed by all BeanPostProcessors.
 		// 注册一个BeanPostProcessorChecker，用于记录Bean在BeanPostProcessor实例化时的信息
+		// 此处+1的操作是因为下面给beanFactory中加入了一个BeanPostProcessorChecker后置处理器.
 		int beanProcessorTargetCount = beanFactory.getBeanPostProcessorCount() + 1 + postProcessorNames.length;
 		beanFactory.addBeanPostProcessor(new BeanPostProcessorChecker(beanFactory, beanProcessorTargetCount));
 
-		// Separate between BeanPostProcessors that implement PriorityOrdered,
-		// Ordered, and the rest.
 		// 存放实现了PriorityOrdered接口和未实现PriorityOrdered接口的BeanPostProcessor
 		List<BeanPostProcessor> priorityOrderedPostProcessors = new ArrayList<>();
+		// 用于存放Spring内部的BeanPostProcessor处理器
 		List<BeanPostProcessor> internalPostProcessors = new ArrayList<>();
 		// 存放实现了Ordered接口和未实现Ordered接口的BeanPostProcessor的beanName.
 		List<String> orderedPostProcessorNames = new ArrayList<>();
+		// 存放未实现任何排序接口的BeanPostProcessor的beanName
 		List<String> nonOrderedPostProcessorNames = new ArrayList<>();
 
 		// 对所有的BeanPostProcessor的beanName进行分类
@@ -331,7 +332,9 @@ final class PostProcessorRegistrationDelegate {
 
 		// Re-register post-processor for detecting inner beans as ApplicationListeners,
 		// moving it to the end of the processor chain (for picking up proxies etc).
-		// 添加ApplicationListenerDetector的BeanPostProcessor.
+		// 添加ApplicationListenerDetector的BeanPostProcessor。
+		//   重复添加一次该beanPostProcessor是为了将该beanPostProcessor移动到beanPostProcessor对应的list的最后
+		//	 上述处理bean的过程中，可能存在一些内部bean也是ApplicationListenerDetector类型，所以需要在添加一次
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(applicationContext));
 	}
 
@@ -411,9 +414,12 @@ final class PostProcessorRegistrationDelegate {
 
 		@Override
 		public Object postProcessAfterInitialization(Object bean, String beanName) {
-			if (!(bean instanceof BeanPostProcessor) && !isInfrastructureBean(beanName) &&
-					this.beanFactory.getBeanPostProcessorCount() < this.beanPostProcessorTargetCount) {
+			// BeanFactoryPostProcessor类型的不检测，其他类型根据则通过isInfrastructureBean检测当前的bean定义是否为Spring内部使用的bean.
+			if (!(bean instanceof BeanPostProcessor)
+					&& !isInfrastructureBean(beanName)
+					&& this.beanFactory.getBeanPostProcessorCount() < this.beanPostProcessorTargetCount) {
 				if (logger.isInfoEnabled()) {
+					// 打印当前不符合条件的bean名称。例如：对于自动代理来说是不合格的.
 					logger.info("Bean '" + beanName + "' of type [" + bean.getClass().getName() +
 							"] is not eligible for getting processed by all BeanPostProcessors " +
 							"(for example: not eligible for auto-proxying)");
@@ -425,6 +431,7 @@ final class PostProcessorRegistrationDelegate {
 		private boolean isInfrastructureBean(@Nullable String beanName) {
 			if (beanName != null && this.beanFactory.containsBeanDefinition(beanName)) {
 				BeanDefinition bd = this.beanFactory.getBeanDefinition(beanName);
+				// 是否为Spring内部使用的Bean
 				return (bd.getRole() == RootBeanDefinition.ROLE_INFRASTRUCTURE);
 			}
 			return false;
