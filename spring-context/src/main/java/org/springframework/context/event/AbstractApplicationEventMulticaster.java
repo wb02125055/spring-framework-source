@@ -57,8 +57,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class AbstractApplicationEventMulticaster
 		implements ApplicationEventMulticaster, BeanClassLoaderAware, BeanFactoryAware {
 
+	// 一个包装类，用来保存应用程序的监听器集合，false表示不进行监听器的预过滤操作
 	private final ListenerRetriever defaultRetriever = new ListenerRetriever(false);
 
+	// 用来保存监听器包装类的集合。ListenerCacheKey中包括了事件类型和源类型.
 	final Map<ListenerCacheKey, ListenerRetriever> retrieverCache = new ConcurrentHashMap<>(64);
 
 	@Nullable
@@ -101,10 +103,13 @@ public abstract class AbstractApplicationEventMulticaster
 		synchronized (this.retrievalMutex) {
 			// Explicitly remove target for a proxy, if registered already,
 			// in order to avoid double invocations of the same listener.
+			// 如果已经注册，则删除已经注册的监听器对象，避免多个重复监听器的重复执行.
 			Object singletonTarget = AopProxyUtils.getSingletonTarget(listener);
 			if (singletonTarget instanceof ApplicationListener) {
+				// 删除监听器对象
 				this.defaultRetriever.applicationListeners.remove(singletonTarget);
 			}
+			// 重新添加监听器对象
 			this.defaultRetriever.applicationListeners.add(listener);
 			this.retrieverCache.clear();
 		}
@@ -360,10 +365,13 @@ public abstract class AbstractApplicationEventMulticaster
 	 */
 	private class ListenerRetriever {
 
+		// 用于存放应用程序的监听器，具有顺序且不可重复
 		public final Set<ApplicationListener<?>> applicationListeners = new LinkedHashSet<>();
 
+		// 用于存放监听器的名称，具有顺序且不可重复
 		public final Set<String> applicationListenerBeans = new LinkedHashSet<>();
 
+		// 是否预过滤监听器
 		private final boolean preFiltered;
 
 		public ListenerRetriever(boolean preFiltered) {

@@ -393,6 +393,7 @@ public abstract class AbstractApplicationContext
 			applicationEvent = (ApplicationEvent) event;
 		}
 		else {
+			// 非ApplicationEvent类型，则转换为时间类型.
 			applicationEvent = new PayloadApplicationEvent<>(this, event);
 			if (eventType == null) {
 				eventType = ((PayloadApplicationEvent<?>) applicationEvent).getResolvableType();
@@ -400,6 +401,7 @@ public abstract class AbstractApplicationContext
 		}
 
 		// Multicast right now if possible - or lazily once the multicaster is initialized
+		// 如果可能，就立刻进行多播或者一旦初始化就进入懒惰状态.
 		if (this.earlyApplicationEvents != null) {
 			this.earlyApplicationEvents.add(applicationEvent);
 		}
@@ -411,6 +413,7 @@ public abstract class AbstractApplicationContext
 		}
 
 		// Publish event via parent context as well...
+		// 如果存在父容器，那么父容器也发布事件
 		if (this.parent != null) {
 			if (this.parent instanceof AbstractApplicationContext) {
 				((AbstractApplicationContext) this.parent).publishEvent(event, eventType);

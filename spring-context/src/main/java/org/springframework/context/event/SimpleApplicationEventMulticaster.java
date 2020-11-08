@@ -155,6 +155,7 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 	 */
 	protected void invokeListener(ApplicationListener<?> listener, ApplicationEvent event) {
 		ErrorHandler errorHandler = getErrorHandler();
+		// 如果存在着异常处理器，则进行try catch处理，使用异常处理器处理异常情况
 		if (errorHandler != null) {
 			try {
 				doInvokeListener(listener, event);
@@ -164,6 +165,7 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 			}
 		}
 		else {
+			// 执行监听器
 			doInvokeListener(listener, event);
 		}
 	}
