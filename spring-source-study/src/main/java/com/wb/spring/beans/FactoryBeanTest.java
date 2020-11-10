@@ -12,5 +12,8 @@ public class FactoryBeanTest {
 
 		Object object = acx.getBean("consumerBean");
 		System.out.println(object);
+
+		Object factoryBean = acx.getBean("&consumerBean");
+		System.out.println(factoryBean);
 	}
 }

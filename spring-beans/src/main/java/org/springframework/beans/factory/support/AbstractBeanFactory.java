@@ -208,6 +208,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		Object bean;
 
 		// 先尝试从缓存中获取单实例Bean，如果能获取到，说明已经被创建过
+		//   注意：如果是通过FactoryBean方式创建对象。在根据名称获取目标bean对象(非FactoryBean实例)时，此处返回的sharedInstance是FactoryBean对象
 		Object sharedInstance = getSingleton(beanName);
 		/**
 		 * 当组件实现了FactoryBean接口，并重写了getObject方法时。在从容器中获取bean的时候，sharedInstance就是容器中返回的bean对象
@@ -1758,7 +1759,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 		Object object = null;
 		if (mbd == null) {
-			// 先从缓存中获取
+			// 先从FactoryBean对应的缓存中获取
 			object = getCachedObjectForFactoryBean(beanName);
 		}
 
