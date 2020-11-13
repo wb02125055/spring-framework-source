@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 public class MyImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar {
 	@Override
 	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
-
 		RootBeanDefinition rootBeanDefinition = new RootBeanDefinition(InstC.class);
 		registry.registerBeanDefinition("instC", rootBeanDefinition);
 	}

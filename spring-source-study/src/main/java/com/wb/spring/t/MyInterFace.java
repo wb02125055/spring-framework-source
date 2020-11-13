@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 public interface MyInterFace {
 	@Bean
 	default String show() {
-		System.out.println("---------------------");
+//		System.out.println("---------------------");
 		return "show";
 	}
 }

@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 @Component("a")
 public class A {
 	public A() {}
+//	public A(B b) {
+//		this.b = b;
+//	}
 	@Autowired
-	public A(B b) {
-		this.b = b;
-	}
 	private B b;
 //	public A() {
 //		System.out.println("A init...");

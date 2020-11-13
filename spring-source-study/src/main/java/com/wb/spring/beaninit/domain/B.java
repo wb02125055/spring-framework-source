@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 @Component("b")
 public class B {
 	public B() {}
-	@Autowired
 	public B(A a) {
 		this.a = a;
 	}
+	@Autowired
 	private A a;
 //	public B() {
 //		System.out.println("B init...");

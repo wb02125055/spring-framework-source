@@ -49,28 +49,28 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 	/**
 	 * 获取自定义的过滤器.
 	 */
-	@Override
-	protected Filter[] getServletFilters() {
-		List<Filter> filters = new ArrayList<>();
-		Filter filter = new Filter() {
-			@Override
-			public void init(FilterConfig filterConfig) {
-				System.out.println("filterConfig invoke ...");
-			}
-
-			@Override
-			public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
-				System.out.println("doFilter... invoke...");
-			}
-
-			@Override
-			public void destroy() {
-				System.out.println("servlet destroy...");
-			}
-		};
-		filters.add(filter);
-		return filters.toArray(new Filter[0]);
-	}
+//	@Override
+//	protected Filter[] getServletFilters() {
+//		List<Filter> filters = new ArrayList<>();
+//		Filter filter = new Filter() {
+//			@Override
+//			public void init(FilterConfig filterConfig) {
+//				System.out.println("filterConfig invoke ...");
+//			}
+//
+//			@Override
+//			public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
+//				System.out.println("doFilter... invoke...");
+//			}
+//
+//			@Override
+//			public void destroy() {
+//				System.out.println("servlet destroy...");
+//			}
+//		};
+//		filters.add(filter);
+//		return filters.toArray(new Filter[0]);
+//	}
 
 	/**
 	 * 获取Servlet的名称

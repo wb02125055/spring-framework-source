@@ -38,7 +38,7 @@ import org.springframework.util.ReflectionUtils;
  * WebApplicationInitializer的子接口，子类，子抽象类
  *   在Servlet容器启动时都会被以参数传入onStartup的webAppInitializerClasses参数中
  */
-@HandlesTypes(WebApplicationInitializer.class)
+@HandlesTypes(value = {WebApplicationInitializer.class})
 // 可以传入多个类型
 //@HandlesTypes(value = {WebApplicationInitializer.class})
 public class SpringServletContainerInitializer implements ServletContainerInitializer {

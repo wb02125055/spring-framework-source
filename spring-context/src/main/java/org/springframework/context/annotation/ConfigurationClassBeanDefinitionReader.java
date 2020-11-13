@@ -279,6 +279,7 @@ class ConfigurationClassBeanDefinitionReader {
 			logger.trace(String.format("Registering bean definition for @Bean method %s.%s()",
 					configClass.getMetadata().getClassName(), beanName));
 		}
+		// 将@Bean标注的方法解析为beanDefinition，并注册到bean定义注册中心
 		this.registry.registerBeanDefinition(beanName, beanDefToRegister);
 	}
 
@@ -367,6 +368,10 @@ class ConfigurationClassBeanDefinitionReader {
 		});
 	}
 
+	/**
+	 * 从Registrar中加载BeanDefinition
+	 * @param registrars registrars
+	 */
 	private void loadBeanDefinitionsFromRegistrars(Map<ImportBeanDefinitionRegistrar, AnnotationMetadata> registrars) {
 		// 调用ImportBeanDefinitionRegistrar子类的registerBeanDefinitions方法.
 		//   示例：声明式事务中的AutoProxyRegistrar类的registerBeanDefinitions方法就是在该步骤中调用的.

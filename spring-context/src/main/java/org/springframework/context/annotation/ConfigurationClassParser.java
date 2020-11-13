@@ -570,7 +570,7 @@ class ConfigurationClassParser {
 		if (importCandidates.isEmpty()) {
 			return;
 		}
-		// 通过栈的数据结构解决循环引入或者链式引入额问题
+		// 通过栈的数据结构解决循环引入或者链式引入的问题
 		if (checkForCircularImports && isChainedImportOnStack(configClass)) {
 			this.problemReporter.error(new CircularImportProblem(configClass, this.importStack));
 		}
@@ -585,19 +585,19 @@ class ConfigurationClassParser {
 						Class<?> candidateClass = candidate.loadClass();
 						ImportSelector selector = BeanUtils.instantiateClass(candidateClass, ImportSelector.class);
 						// 执行selector的初始化AWare方法。包括：BeanClassLoaderAware,BeanFactoryAware,EnvironmentAware,ResourceLoaderAware
-						ParserStrategyUtils.invokeAwareMethods(
-								selector, this.environment, this.resourceLoader, this.registry);
+						ParserStrategyUtils.invokeAwareMethods(selector, this.environment, this.resourceLoader, this.registry);
 						if (selector instanceof DeferredImportSelector) {
 							this.deferredImportSelectorHandler.handle(configClass, (DeferredImportSelector) selector);
 						}
 						else {
 							// 获取到通过TransactionManagementConfigurationSelector导入的两个组件名称
-
 							// org.springframework.context.annotation.AutoProxyRegistrar和
 							//		org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration
 							String[] importClassNames = selector.selectImports(currentSourceClass.getMetadata());
+
 							// 将String类型的importClassNames包装为一个SourceClass类型的List集合. SourceClass实现了Ordered接口
 							Collection<SourceClass> importSourceClasses = asSourceClasses(importClassNames);
+
 							// 递归调用processImports方法，因为解析到的类中可能又包括了@Import注解
 							processImports(configClass, currentSourceClass, importSourceClasses, false);
 						}
@@ -609,8 +609,8 @@ class ConfigurationClassParser {
 						Class<?> candidateClass = candidate.loadClass();
 						ImportBeanDefinitionRegistrar registrar =
 								BeanUtils.instantiateClass(candidateClass, ImportBeanDefinitionRegistrar.class);
-						ParserStrategyUtils.invokeAwareMethods(
-								registrar, this.environment, this.resourceLoader, this.registry);
+						ParserStrategyUtils.invokeAwareMethods(registrar, this.environment, this.resourceLoader, this.registry);
+
 						configClass.addImportBeanDefinitionRegistrar(registrar, currentSourceClass.getMetadata());
 					}
 					else {

@@ -978,6 +978,7 @@ public abstract class AnnotationUtils {
 	 * @since 4.3.8
 	 */
 	static boolean isInJavaLangAnnotationPackage(@Nullable Class<? extends Annotation> annotationType) {
+		// 当前的注解是否以"java.lang.annotation"开头的
 		return (annotationType != null && isInJavaLangAnnotationPackage(annotationType.getName()));
 	}
 
