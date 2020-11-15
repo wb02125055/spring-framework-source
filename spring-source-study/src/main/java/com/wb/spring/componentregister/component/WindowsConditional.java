@@ -9,7 +9,7 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
  *
  * 匹配windows系统，如果当前系统名称中包含Windows关键字，则注入带有该匹配条件的Bean.
  */
-public class WindowsCondition implements Condition {
+public class WindowsConditional implements Condition {
 	@Override
 	public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
 		String osName = context.getEnvironment().getProperty("os.name");

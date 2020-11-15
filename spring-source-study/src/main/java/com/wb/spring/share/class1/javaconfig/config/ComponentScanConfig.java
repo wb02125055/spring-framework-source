@@ -1,9 +1,9 @@
-package com.wb.spring.share.class1.config;
+package com.wb.spring.share.class1.javaconfig.config;
 
-import com.wb.spring.share.class1.SelfBeanDefinitionRegistryPostProcessor;
-import com.wb.spring.share.class1.condition.HotDogCondition;
-import com.wb.spring.share.class1.condition.WindowsCondition;
+
 import com.wb.spring.share.class1.domain.HotDog;
+import com.wb.spring.share.class1.javaconfig.condition.WindowsCondition;
+import com.wb.spring.share.class1.javaconfig.ext.SelfBeanDefinitionRegistryPostProcessor;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.*;
 import org.springframework.core.annotation.Order;
@@ -34,7 +34,7 @@ public class ComponentScanConfig {
 
 	@Bean(name = "hotDog", initMethod = "createHotDog", destroyMethod = "eatHotDog")
 	@Scope(value = BeanDefinition.SCOPE_SINGLETON)
-	@Conditional(value = HotDogCondition.class)
+	@Conditional(value = WindowsCondition.class)
 	@Order(value = 1)
 	@Lazy(value = false)
 	@Role(value = BeanDefinition.ROLE_INFRASTRUCTURE)

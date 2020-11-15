@@ -1,6 +1,6 @@
-package com.wb.spring.share.class1;
+package com.wb.spring.share.class1.javaconfig;
 
-import com.wb.spring.share.class1.config.ComponentScanConfig;
+import com.wb.spring.share.class1.javaconfig.config.ComponentScanConfig;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 

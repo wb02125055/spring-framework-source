@@ -1,7 +1,7 @@
 package com.wb.spring.componentregister.config;
 
 import com.wb.spring.componentregister.component.MyInstatiationAwareBeanPostProcessor;
-import com.wb.spring.componentregister.component.WindowsCondition;
+import com.wb.spring.componentregister.component.WindowsConditional;
 import com.wb.spring.componentregister.domain.Sheep;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +32,7 @@ public class BeanRegisterConfig {
 	@Bean(initMethod = "init", destroyMethod = "destroy")
 	@Scope(value = AnnotatedBeanDefinition.SCOPE_PROTOTYPE)
 	@Lazy(value = false)
-	@Conditional({WindowsCondition.class})
+	@Conditional({WindowsConditional.class})
 	// 根据条件判断是否需要像容器中加入Sheep类型的Bean.
 	public Sheep sheep() {
 		System.out.println("name:" + name);

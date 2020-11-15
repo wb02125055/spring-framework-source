@@ -1,4 +1,4 @@
-package com.wb.spring.share.class1.condition;
+package com.wb.spring.share.class1.javaconfig.condition;
 
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;

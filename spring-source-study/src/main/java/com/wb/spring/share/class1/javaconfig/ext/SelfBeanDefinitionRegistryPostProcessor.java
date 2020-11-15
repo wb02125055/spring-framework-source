@@ -1,4 +1,4 @@
-package com.wb.spring.share.class1;
+package com.wb.spring.share.class1.javaconfig.ext;
 
 import com.wb.spring.share.class1.domain.Teacher;
 import org.springframework.beans.BeansException;
