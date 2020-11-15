@@ -127,6 +127,7 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 		if (this.propertySources == null) {
+			// 初始化propertySources
 			this.propertySources = new MutablePropertySources();
 			if (this.environment != null) {
 				this.propertySources.addLast(
@@ -154,6 +155,7 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 			}
 		}
 
+		// 处理属性
 		processProperties(beanFactory, new PropertySourcesPropertyResolver(this.propertySources));
 		this.appliedPropertySources = this.propertySources;
 	}
@@ -165,6 +167,7 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 	protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess,
 			final ConfigurablePropertyResolver propertyResolver) throws BeansException {
 
+		// 设置占位符前缀，后缀和分隔符
 		propertyResolver.setPlaceholderPrefix(this.placeholderPrefix);
 		propertyResolver.setPlaceholderSuffix(this.placeholderSuffix);
 		propertyResolver.setValueSeparator(this.valueSeparator);
@@ -178,7 +181,7 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 			}
 			return (resolved.equals(this.nullValue) ? null : resolved);
 		};
-
+		// 处理属性值，添加默认的内嵌值处理器
 		doProcessProperties(beanFactoryToProcess, valueResolver);
 	}
 

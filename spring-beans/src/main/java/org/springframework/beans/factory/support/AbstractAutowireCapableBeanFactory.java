@@ -468,9 +468,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			mbdToUse.setBeanClass(resolvedClass);
 		}
 		try {
-			// 对lookup-method和replace-method指定的方法进行预处理.
+			// 对lookup-method和replaced-method指定的方法进行预处理.
 			// 主要是标记bean中是否有重载方法。如果一个类有多个重载方法，在后面真正调用或者增强的时候，还需要根据参数类型和参数个数判断调用的哪一个方法，
 			// 此处相当于是提前处理。对于只有一个方法的bean，直接标记为无重载方法.
+			//  使用的地方：该处设置完标志位之后，在后期的实例化过程中使用cglib实例化策略的时候会使用到。
 			mbdToUse.prepareMethodOverrides();
 		}
 		catch (BeanDefinitionValidationException ex) {
@@ -1289,13 +1290,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	@Override
 	protected Object getObjectForBeanInstance(
 			Object beanInstance, String name, String beanName, @Nullable RootBeanDefinition mbd) {
-
+		// 从ThreadLocal中获取当前正在创建的Bean的名称
 		String currentlyCreatedBean = this.currentlyCreatedBean.get();
 		if (currentlyCreatedBean != null) {
 			registerDependentBean(beanName, currentlyCreatedBean);
 		}
 
-		// 获取bean实例
+		// 调用父类AbstractBeanFactory的getObjectForBeanInstance方法获取bean实例
 		return super.getObjectForBeanInstance(beanInstance, name, beanName, mbd);
 	}
 

@@ -203,7 +203,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	@SuppressWarnings("unchecked")
 	protected <T> T doGetBean(final String name, @Nullable final Class<T> requiredType,
 			@Nullable final Object[] args, boolean typeCheckOnly) throws BeansException {
-		// 获取真正的BeanName
+		// 获取真正的BeanName。主要包括：(1) 去掉FactoryBean名称前面的&前缀；(2) bean别名解析；
 		final String beanName = transformedBeanName(name);
 		Object bean;
 
@@ -228,7 +228,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
 		}
 		else {
-			// 如果当前的多实例bean正在创建中，直接抛出异常
+			// 如果当前创建的是单实例类型的bean，则尝试解决循环依赖，此处仅仅只是一个校验；如果当前的多实例bean正在创建中，而且存在循环依赖，直接抛出异常
 			if (isPrototypeCurrentlyInCreation(beanName)) {
 				throw new BeanCurrentlyInCreationException(beanName);
 			}
@@ -1752,14 +1752,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		// Now we have the bean instance, which may be a normal bean or a FactoryBean.
 		// If it's a FactoryBean, we use it to create a bean instance, unless the
 		// caller actually wants a reference to the factory.
-		// 如果不是工厂bean，而且bean的名称也是不是以&开头，则直接返回上一步中已经创建好的bean对象.
+		// 如果不是工厂bean或者bean的名称也是不是以&开头，则直接返回上一步中已经创建好的bean对象.
 		if (!(beanInstance instanceof FactoryBean) || BeanFactoryUtils.isFactoryDereference(name)) {
 			return beanInstance;
 		}
 
 		Object object = null;
 		if (mbd == null) {
-			// 先从FactoryBean对应的缓存中获取
+			// 先从FactoryBean对应的缓存factoryBeanObjectCache中获取
 			object = getCachedObjectForFactoryBean(beanName);
 		}
 

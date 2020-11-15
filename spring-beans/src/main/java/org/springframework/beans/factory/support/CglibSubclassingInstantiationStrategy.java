@@ -62,12 +62,16 @@ public class CglibSubclassingInstantiationStrategy extends SimpleInstantiationSt
 	/**
 	 * Index in the CGLIB callback array for a method that should
 	 * be overridden to provide <em>method lookup</em>.
+	 *
+	 * 通过lookup-method创建
 	 */
 	private static final int LOOKUP_OVERRIDE = 1;
 
 	/**
 	 * Index in the CGLIB callback array for a method that should
 	 * be overridden using generic <em>method replacer</em> functionality.
+	 *
+	 * 通过replaced-method创建
 	 */
 	private static final int METHOD_REPLACER = 2;
 

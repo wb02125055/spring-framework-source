@@ -7,6 +7,8 @@ import com.wb.spring.beaninit.domain.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.util.StringTokenizer;
+
 /**
  * @author wangbin33
  * @date 2020/4/26 20:16
@@ -35,5 +37,22 @@ public class TestMain {
 
 //		String property = System.getProperty("user.name");
 //		System.out.println(property);
+
+
+//		String reqUrl = "/123123/aafsadfsa/1231/2134213.xlsx?sign=12312313125132eqda123213";
+//		String fileNameAndSign = reqUrl.substring(reqUrl.lastIndexOf("/"));
+//		System.out.println("fileNameAndSign: " + fileNameAndSign);
+//		String fileName = fileNameAndSign.substring(1, fileNameAndSign.indexOf(".", 1)) + ".xlsx";
+//		System.out.println("fileName: " + fileName);
+//		System.out.println(fileNameAndSign);
+
+		String str = "1,2,3,4,5,6,7,8,9,10";
+		StringTokenizer tokenizer = new StringTokenizer(str, ",");
+		while (tokenizer.hasMoreElements()) {
+//			String s = tokenizer.nextToken();
+			Object o = tokenizer.nextElement();
+//			System.out.println(s);
+			System.out.println(o);
+		}
 	}
 }

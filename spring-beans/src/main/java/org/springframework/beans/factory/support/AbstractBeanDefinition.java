@@ -1213,7 +1213,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 		else if (count == 1) {
 			// Mark override as not overloaded, to avoid the overhead of arg type checking.
 			// 标记方法没有重载，在后面调用方法的时候，直接根据方法名称和方法类型去调用。
-			// 此处相当于一个预处理，在后面使用的时候直接调用方法，不用在判断调用的哪个重载方法.
+			// 此处相当于一个预处理，在后面使用的时候直接调用方法，不用在判断调用的哪个重载方法，避免再次判断的开销
 			mo.setOverloaded(false);
 		}
 	}

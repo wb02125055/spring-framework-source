@@ -70,6 +70,7 @@ public abstract class BeanFactoryUtils {
 	 * bean的名称是否以&开头.
 	 */
 	public static boolean isFactoryDereference(@Nullable String name) {
+		// FACTORY_BEAN_PREFIX: &
 		return (name != null && name.startsWith(BeanFactory.FACTORY_BEAN_PREFIX));
 	}
 

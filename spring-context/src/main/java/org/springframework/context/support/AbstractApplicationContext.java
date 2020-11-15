@@ -1112,15 +1112,15 @@ public abstract class AbstractApplicationContext
 		 *		}
 		 *	}
 		 */
-		if (beanFactory.containsBean(CONVERSION_SERVICE_BEAN_NAME) &&
-				beanFactory.isTypeMatch(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class)) {
-			beanFactory.setConversionService(
-					beanFactory.getBean(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class));
+		if (beanFactory.containsBean(CONVERSION_SERVICE_BEAN_NAME)
+				&& beanFactory.isTypeMatch(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class)) {
+			beanFactory.setConversionService(beanFactory.getBean(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class));
 		}
 		/**
 		 * 如果beanFactory之前没有注册嵌入值解析器，则注册默认的嵌入值解析器，
 		 *  主要用于注解属性值的解析例如：@Value("${app.name}")。
 		 */
+		// 值解析器设置的地方：在调用invokeBeanfactoryPostProcessor方法的时候，通过PropertySourcesPlaceholderConfigurer的后置处理方法设置进去的
 		if (!beanFactory.hasEmbeddedValueResolver()) {
 			// 调用resolvePlaceholders方法解析strVal对应的值
 			beanFactory.addEmbeddedValueResolver(strVal -> getEnvironment().resolvePlaceholders(strVal));

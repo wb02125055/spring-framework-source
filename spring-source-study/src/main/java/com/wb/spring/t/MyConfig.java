@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Configuration;
  * Description:
  *
  * @author wangbin33
- * @date 2020/11/1 10:51
+ * @date 2020/11/14 10:10
  */
 @Configuration
-@ComponentScan("com.wb.spring.t")
+@ComponentScan(basePackages = {"com.wb.spring.t"})
 public class MyConfig {
 }

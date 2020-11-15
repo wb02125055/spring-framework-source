@@ -10,6 +10,6 @@
 	</bean>
 
 	<bean id="configUtil" class="com.wb.spring.beans.ConfigUtil">
-		<property name="client" ref="configClient" />
+		<property name="client" ref="configClient"/>
 	</bean>
 </beans>

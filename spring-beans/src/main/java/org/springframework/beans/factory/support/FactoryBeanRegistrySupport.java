@@ -65,6 +65,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 						factoryBean::getObjectType, getAccessControlContext());
 			}
 			else {
+				// 调用FactoryBean的getObjectType方法获取bean的类型
 				return factoryBean.getObjectType();
 			}
 		}
@@ -85,6 +86,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 	 */
 	@Nullable
 	protected Object getCachedObjectForFactoryBean(String beanName) {
+		// 直接从factoryBeanObjectCache中获取由factoryBean创建的bean对象
 		return this.factoryBeanObjectCache.get(beanName);
 	}
 
@@ -97,7 +99,11 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 	 * @throws BeanCreationException if FactoryBean object creation failed
 	 * @see org.springframework.beans.factory.FactoryBean#getObject()
 	 */
+	// 注意：getObject方法
+	// 		如果对应的bean是单例的，会使用factoryBeanObjectCache进行单实例bean的缓存。
+	//	    如果不是单例的，每次都会调用getObject进行重新获取。
 	protected Object getObjectFromFactoryBean(FactoryBean<?> factory, String beanName, boolean shouldPostProcess) {
+		// 如果是单例的
 		if (factory.isSingleton() && containsSingleton(beanName)) {
 			synchronized (getSingletonMutex()) {
 				/**
@@ -123,8 +129,10 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 								// Temporarily return non-post-processed object, not storing it yet..
 								return object;
 							}
+							// bean创建之后进行一些校验操作
 							beforeSingletonCreation(beanName);
 							try {
+								// 使用factoryBean创建bean实例之前的后置处理
 								object = postProcessObjectFromFactoryBean(object, beanName);
 							}
 							catch (Throwable ex) {

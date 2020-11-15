@@ -138,10 +138,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 			// 设置序列化ID，ID: class名称 + "@" + 对象的十六进制值
 			beanFactory.setSerializationId(getId());
 
-			/**
-			 * 定制bean工厂
-			 * 作用：设置bean定义是否可以被覆盖以及设置bean在创建的时候是否允许循环引用.
-			 */
+			// 定制bean工厂。作用：设置bean定义是否可以被覆盖以及设置bean在创建的时候是否允许循环引用.
 			customizeBeanFactory(beanFactory);
 
 			// 解析并加载bean的定义，默认是通过AbstractXmlApplicationContext类中的loadBeanDefinitions实现

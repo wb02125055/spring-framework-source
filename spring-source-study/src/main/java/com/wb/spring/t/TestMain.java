@@ -10,35 +10,20 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  */
 public class TestMain {
 
-	private static boolean flag = true;
-
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		AnnotationConfigApplicationContext acx = new AnnotationConfigApplicationContext(MyConfig.class);
-//		MyInterFace bean = acx.getBean(MyInterFace.class);
-//		Object res = acx.getBean("show");
-//		System.out.println(res);
-//		System.out.println(res instanceof String);
-//		Object child = acx.getBean("child");
-//		System.out.println(child);
-//		if (child instanceof Child) {
-//			((Child) child).test();
-//		}
-//		String result = bean.show();
-//		System.out.println(result);
-//		acx.close();
 
+		Object pigObj1 = acx.getBean("pigFactory");
+		Object pigObj2 = acx.getBean("pigFactory");
+		Object factory1 = acx.getBean("&&&pigFactory");
+		Object factory2 = acx.getBean("&&pigFactory");
+		Object factory3 = acx.getBean("&pigFactory");
 
-		new Thread(() -> {
-			System.out.println("=====");
-			while(flag) {
-				System.out.printf("77777");
-			}
-		}).start();
-		System.out.println("--------");
-		Thread.sleep(1000);
-		System.out.println("*****");
-		new Thread(() -> {
-			flag = false;
-		}).start();
+		System.out.println(pigObj1);
+		System.out.println(pigObj2);
+		System.out.println("===================");
+		System.out.println(factory1);
+		System.out.println(factory2);
+		System.out.println(factory3);
 	}
 }

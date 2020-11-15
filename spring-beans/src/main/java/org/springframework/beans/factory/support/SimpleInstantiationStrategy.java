@@ -60,8 +60,9 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 	@Override
 	public Object instantiate(RootBeanDefinition bd, @Nullable String beanName, BeanFactory owner) {
 		// Don't override the class with CGLIB if no overrides.
-		// 如果没有覆写的方法
+		// 如果没有覆写的方法，可以直接实例化
 		if (!bd.hasMethodOverrides()) {
+			// 实例化对象使用的构造方法
 			Constructor<?> constructorToUse;
 			synchronized (bd.constructorArgumentLock) {
 				// 获取用于创建bean对象的构造方法
