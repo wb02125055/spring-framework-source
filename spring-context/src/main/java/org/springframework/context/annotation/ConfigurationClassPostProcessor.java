@@ -315,6 +315,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			// 	 例如：(1) 标注@Configuration的类不能是final类型的; (2)标注@Bean的方法是否为静态的等等。。。
 			parser.validate();
 
+			// 预解析完成之后的配置类元数据
 			Set<ConfigurationClass> configClasses = new LinkedHashSet<>(parser.getConfigurationClasses());
 			configClasses.removeAll(alreadyParsed);
 

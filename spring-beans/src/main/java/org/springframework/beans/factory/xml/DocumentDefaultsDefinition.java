@@ -26,6 +26,8 @@ import org.springframework.lang.Nullable;
  *
  * @author Juergen Hoeller
  * @since 2.0.2
+ *
+ * 用来封装<beans/>标签中解析出的属性信息
  */
 public class DocumentDefaultsDefinition implements DefaultsDefinition {
 

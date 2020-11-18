@@ -398,6 +398,7 @@ class ConfigurationClassParser {
 	 * Retrieve the metadata for all <code>@Bean</code> methods.
 	 */
 	private Set<MethodMetadata> retrieveBeanMethodMetadata(SourceClass sourceClass) {
+		// sourceClass: 具体的配置类
 		AnnotationMetadata original = sourceClass.getMetadata();
 		// original的默认类型为AnnotationMetadataReadingVisitor
 		Set<MethodMetadata> beanMethods = original.getAnnotatedMethods(Bean.class.getName());

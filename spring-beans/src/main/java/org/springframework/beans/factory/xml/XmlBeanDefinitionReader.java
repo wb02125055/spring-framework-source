@@ -393,7 +393,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 			throws BeanDefinitionStoreException {
 
 		try {
-			// 加载xml文档定义.
+			// 将xml配置文件通过JDK中的JAXP(Java API for XMLProcessing)解析为Document对象
 			Document doc = doLoadDocument(inputSource, resource);
 			// 注册bean定义
 			int count = registerBeanDefinitions(doc, resource);
@@ -518,11 +518,11 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 * @see BeanDefinitionDocumentReader#registerBeanDefinitions
 	 */
 	public int registerBeanDefinitions(Document doc, Resource resource) throws BeanDefinitionStoreException {
-		// 初始化Bean定义文档读取器
+		// 通过反射创建Bean定义文档读取器，默认类型为：DefaultBeanDefinitionDocumentReader
 		BeanDefinitionDocumentReader documentReader = createBeanDefinitionDocumentReader();
-		// 获取之前已经加载的bean定义数量
+		// 获取之前已经加载的bean定义数量，直接通过beanDefinitionMap.size获取
 		int countBefore = getRegistry().getBeanDefinitionCount();
-		// 执行xml的解析及bean定义注册.
+		// 执行xml的解析及bean定义注册。在创建bean定义读取器上下文时，会去创建默认的DefaultNamespaceHandlerResolver
 		documentReader.registerBeanDefinitions(doc, createReaderContext(resource));
 		// 返回本次注册的bean定义的数量
 		return getRegistry().getBeanDefinitionCount() - countBefore;

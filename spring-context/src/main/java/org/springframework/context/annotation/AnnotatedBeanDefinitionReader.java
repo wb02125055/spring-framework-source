@@ -254,8 +254,8 @@ public class AnnotatedBeanDefinitionReader {
 		 *
 		 * abd.getMetadata获取到的MedataData类型为 StandardAnnotationMetaData
 		*/
+		// 如果当前配置类上没有标注@Conditional注解，返回false
 		if (this.conditionEvaluator.shouldSkip(abd.getMetadata())) {
-			// 如果当前配置类上标注有@Conditional注解，直接跳过
 			return;
 		}
 

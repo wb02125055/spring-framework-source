@@ -51,15 +51,19 @@ public class PropertyPlaceholderHelper {
 	}
 
 
+	// 占位符前缀
 	private final String placeholderPrefix;
 
+	// 占位符后缀
 	private final String placeholderSuffix;
 
 	private final String simplePrefix;
 
+	// 占位符中变量和值之间的分隔符
 	@Nullable
 	private final String valueSeparator;
 
+	// 无法解析到占位符的时候是否忽略占位符
 	private final boolean ignoreUnresolvablePlaceholders;
 
 

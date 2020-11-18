@@ -167,6 +167,7 @@ public abstract class BeanDefinitionReaderUtils {
 		String beanName = definitionHolder.getBeanName();
 
 		// 将配置类对应的bean定义保存到Bean定义注册中心，默认是DefaultListableBeanFactory
+		// registry: AnnotationConfigApplicationContext
 		registry.registerBeanDefinition(beanName, definitionHolder.getBeanDefinition());
 
 		// 获取bean定义的别名
@@ -176,7 +177,7 @@ public abstract class BeanDefinitionReaderUtils {
 		// 注册的格式是：map   key: beanName
 		if (aliases != null) {
 			for (String alias : aliases) {
-				// 将bean的别名注册到别名注册中心
+				// 将bean的别名注册到别名注册中心，调用GenericApplicationContext中的registerAlias方法
 				registry.registerAlias(beanName, alias);
 			}
 		}

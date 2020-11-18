@@ -143,6 +143,7 @@ class ConfigurationClassBeanDefinitionReader {
 			loadBeanDefinitionsForBeanMethod(beanMethod);
 		}
 
+		// 从@ImportResources中加载bean定义
 		loadBeanDefinitionsFromImportedResources(configClass.getImportedResources());
 
 		// 从BeanDefinitionRegistrar中加载bean定义，即：实现了ImportBeanDefinitionRegistrar接口的实现类

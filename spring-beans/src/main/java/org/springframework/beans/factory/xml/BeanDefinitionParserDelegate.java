@@ -308,6 +308,7 @@ public class BeanDefinitionParserDelegate {
 	 * @see #getDefaults()
 	 */
 	public void initDefaults(Element root, @Nullable BeanDefinitionParserDelegate parent) {
+		// 解析并封装<beans/>标签中默认的属性信息
 		populateDefaults(this.defaults, (parent != null ? parent.defaults : null), root);
 		this.readerContext.fireDefaultsRegistered(this.defaults);
 	}
@@ -322,6 +323,7 @@ public class BeanDefinitionParserDelegate {
 	 * @param root the root element of the current bean definition document (or nested beans element)
 	 */
 	protected void populateDefaults(DocumentDefaultsDefinition defaults, @Nullable DocumentDefaultsDefinition parentDefaults, Element root) {
+		// 解析默认的default-lazy-init属性
 		String lazyInit = root.getAttribute(DEFAULT_LAZY_INIT_ATTRIBUTE);
 		if (isDefaultValue(lazyInit)) {
 			// Potentially inherited from outer <beans> sections, otherwise falling back to false.
@@ -329,6 +331,7 @@ public class BeanDefinitionParserDelegate {
 		}
 		defaults.setLazyInit(lazyInit);
 
+		// 解析默认的default-merge
 		String merge = root.getAttribute(DEFAULT_MERGE_ATTRIBUTE);
 		if (isDefaultValue(merge)) {
 			// Potentially inherited from outer <beans> sections, otherwise falling back to false.
@@ -336,6 +339,7 @@ public class BeanDefinitionParserDelegate {
 		}
 		defaults.setMerge(merge);
 
+		// 解析默认的default-autowire
 		String autowire = root.getAttribute(DEFAULT_AUTOWIRE_ATTRIBUTE);
 		if (isDefaultValue(autowire)) {
 			// Potentially inherited from outer <beans> sections, otherwise falling back to 'no'.
@@ -343,6 +347,7 @@ public class BeanDefinitionParserDelegate {
 		}
 		defaults.setAutowire(autowire);
 
+		// 解析默认的default-autowire-candidates
 		if (root.hasAttribute(DEFAULT_AUTOWIRE_CANDIDATES_ATTRIBUTE)) {
 			defaults.setAutowireCandidates(root.getAttribute(DEFAULT_AUTOWIRE_CANDIDATES_ATTRIBUTE));
 		}
@@ -350,13 +355,14 @@ public class BeanDefinitionParserDelegate {
 			defaults.setAutowireCandidates(parentDefaults.getAutowireCandidates());
 		}
 
+		// 解析默认的default-init-method
 		if (root.hasAttribute(DEFAULT_INIT_METHOD_ATTRIBUTE)) {
 			defaults.setInitMethod(root.getAttribute(DEFAULT_INIT_METHOD_ATTRIBUTE));
 		}
 		else if (parentDefaults != null) {
 			defaults.setInitMethod(parentDefaults.getInitMethod());
 		}
-
+		// 解析默认的default-destroy-method
 		if (root.hasAttribute(DEFAULT_DESTROY_METHOD_ATTRIBUTE)) {
 			defaults.setDestroyMethod(root.getAttribute(DEFAULT_DESTROY_METHOD_ATTRIBUTE));
 		}
@@ -526,18 +532,30 @@ public class BeanDefinitionParserDelegate {
 			// 创建bean定义
 			AbstractBeanDefinition bd = createBeanDefinition(className, parent);
 
+			// 解析<bean/>标签中的基本属性
 			parseBeanDefinitionAttributes(ele, beanName, containingBean, bd);
 			bd.setDescription(DomUtils.getChildElementValueByTagName(ele, DESCRIPTION_ELEMENT));
 
+			// 解析metadata
 			parseMetaElements(ele, bd);
+
+			// 解析<lookup-method/>标签
 			parseLookupOverrideSubElements(ele, bd.getMethodOverrides());
+
+			// 解析<replace-method/>标签
 			parseReplacedMethodSubElements(ele, bd.getMethodOverrides());
 
+			// 解析<constructor-arg/>
 			parseConstructorArgElements(ele, bd);
+
+			// 解析<property/>标签
 			parsePropertyElements(ele, bd);
+
+			// 解析<qualifier/>标签
 			parseQualifierElements(ele, bd);
 
 			bd.setResource(this.readerContext.getResource());
+
 			bd.setSource(extractSource(ele));
 
 			return bd;
@@ -651,6 +669,7 @@ public class BeanDefinitionParserDelegate {
 	protected AbstractBeanDefinition createBeanDefinition(@Nullable String className, @Nullable String parentName)
 			throws ClassNotFoundException {
 
+		// 此处返回的BeanDefinition类型为GenericBeanDefinition
 		return BeanDefinitionReaderUtils.createBeanDefinition(
 				parentName, className, this.readerContext.getBeanClassLoader());
 	}

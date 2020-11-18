@@ -12,7 +12,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class TestMain {
 	public static void main(String[] args) {
 		ApplicationContext acx = new ClassPathXmlApplicationContext("class1/spring-config.xml");
+		System.out.println("beanDefinitionCount: " + acx.getBeanDefinitionCount());
 		Object hotDog = acx.getBean("hotDog");
 		System.out.println(hotDog);
+		for (String beanName : acx.getBeanDefinitionNames()) {
+			System.out.println(beanName);
+		}
+
+//		ApplicationContext acx = new ClassPathXmlApplicationContext("spring-${user.name}.xml");
+//
+//		Object myProcessor = acx.getBean("otherProcessor");
+//		System.out.println(myProcessor);
 	}
 }

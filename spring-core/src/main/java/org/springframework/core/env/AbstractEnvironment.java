@@ -107,8 +107,11 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 
 	private final Set<String> defaultProfiles = new LinkedHashSet<>(getReservedDefaultProfiles());
 
+	/**
+	 * 用来封装系统属性信息及环境变量信息
+	 */
 	private final MutablePropertySources propertySources = new MutablePropertySources();
-;
+
 	/** 初始化配置文件解析器 */
 	private final ConfigurablePropertyResolver propertyResolver =
 			new PropertySourcesPropertyResolver(this.propertySources);

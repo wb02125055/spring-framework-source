@@ -44,7 +44,7 @@ public class ContextNamespaceHandler extends NamespaceHandlerSupport {
 		 * CommonAnnotationBeanPostProcessor:
 		 * PersistenceAnnotationBeanPostProcessor:
 		 *   这4个BeanPostProcessor的作用，就是为了系统能够识别相应的注解
-			 如果想使用@ Resource 、@ PostConstruct、@ PreDestroy等注解就必须声明 CommonAnnotationBeanPostProcessor。
+			 如果想使用@Resource 、@PostConstruct、@PreDestroy等注解就必须声明 CommonAnnotationBeanPostProcessor。
 			 如果想使用@PersistenceContext注解，就必须声明 PersistenceAnnotationBeanPostProcessor的Bean。
 			 如果想使用@Autowired注解，那么就必须事先在 Spring 容器中声明 AutowiredAnnotationBeanPostProcessor Bean。
 			 如果想使用 @Required的注解，就必须声明 RequiredAnnotationBeanPostProcessor 的Bean。

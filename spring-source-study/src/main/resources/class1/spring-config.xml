@@ -8,6 +8,10 @@
        http://www.springframework.org/schema/context/spring-context.xsd"
 	   default-autowire="byType">
 
+	<!-- 开启注解扫描 -->
+	<context:component-scan base-package="com.wb.spring.share.class1"/>
+
+<!--	<context:annotation-config />-->
 	<bean id="hotDog" class="com.wb.spring.share.class1.domain.HotDog"
 		  scope="prototype"
 		  init-method="createHotDog"
