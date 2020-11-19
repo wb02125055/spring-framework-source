@@ -52,6 +52,8 @@ public interface NamespaceHandler {
 	 * Invoked by the {@link DefaultBeanDefinitionDocumentReader} after
 	 * construction but before any custom elements are parsed.
 	 * @see NamespaceHandlerSupport#registerBeanDefinitionParser(String, BeanDefinitionParser)
+	 *
+	 * 注册xml标签对应的Bean定义解析器
 	 */
 	void init();
 
@@ -68,6 +70,8 @@ public interface NamespaceHandler {
 	 * @param element the element that is to be parsed into one or more {@code BeanDefinitions}
 	 * @param parserContext the object encapsulating the current state of the parsing process
 	 * @return the primary {@code BeanDefinition} (can be {@code null} as explained above)
+	 *
+	 * 通过xml元素解析具体的bean定义
 	 */
 	@Nullable
 	BeanDefinition parse(Element element, ParserContext parserContext);
@@ -90,6 +94,8 @@ public interface NamespaceHandler {
 	 * or simply the original bean definition if no decoration is required.
 	 * A {@code null} value is strictly speaking invalid, but will be leniently
 	 * treated like the case where the original bean definition gets returned.
+	 *
+	 * 解析bean定义，并将解析到的bean定义装饰为一个BeanDefinitionHolder对象返回
 	 */
 	@Nullable
 	BeanDefinitionHolder decorate(Node source, BeanDefinitionHolder definition, ParserContext parserContext);

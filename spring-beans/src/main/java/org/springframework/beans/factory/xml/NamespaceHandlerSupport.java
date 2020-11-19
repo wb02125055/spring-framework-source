@@ -47,18 +47,24 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 	/**
 	 * Stores the {@link BeanDefinitionParser} implementations keyed by the
 	 * local name of the {@link Element Elements} they handle.
+	 *
+	 * 用来保存所有的Bean定义解析器
 	 */
 	private final Map<String, BeanDefinitionParser> parsers = new HashMap<>();
 
 	/**
 	 * Stores the {@link BeanDefinitionDecorator} implementations keyed by the
 	 * local name of the {@link Element Elements} they handle.
+	 *
+	 * 用来保存bean定义对应的装饰对象，key为Element元素的名称，通常解析xml中的bean定义时会使用到
 	 */
 	private final Map<String, BeanDefinitionDecorator> decorators = new HashMap<>();
 
 	/**
 	 * Stores the {@link BeanDefinitionDecorator} implementations keyed by the local
 	 * name of the {@link Attr Attrs} they handle.
+	 *
+	 * 用来保存bean定义对应的装饰对象，key为Element中某一个Element中的某个属性名
 	 */
 	private final Map<String, BeanDefinitionDecorator> attributeDecorators = new HashMap<>();
 
@@ -84,6 +90,7 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 	@Nullable
 	private BeanDefinitionParser findParserForElement(Element element, ParserContext parserContext) {
 		String localName = parserContext.getDelegate().getLocalName(element);
+		// 从Bean定义解析器缓存中获取对应的Bean定义解析器
 		BeanDefinitionParser parser = this.parsers.get(localName);
 		if (parser == null) {
 			parserContext.getReaderContext().fatal(
