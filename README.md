@@ -7,8 +7,8 @@
 ##### 核心容器
 ```
 spring-beans，spring-core: 这两个模块是Spring的核心模块，提供了IOC和DI的支持。
-spring-context: 提供了Spring容器的支持，扩展了BeanFactory，提供了Spring中Bean生命周期的支持，在bean创建完成之后，也是由该模块
-    负责来维护bean和bean之间的依赖关系。常用的ApplicationContext核心接口也是该模块中所支持的；
+spring-context: 提供了Spring容器的支持，扩展了BeanFactory，提供了Spring中Bean生命周期的支持，在bean创建完成之后，
+    也是由该模块负责来维护bean和bean之间的依赖关系。常用的ApplicationContext核心接口也是该模块中所支持的；
 spring-expression: 提供了对Spring表达式语言(SPEL)的支持；
 ```
 
@@ -24,8 +24,8 @@ spring-webflux: Spring WebFlux是Spring Framework 5.0中引入的新的反应式
 
 ##### 切面AOP
 ```
-spring-aop: Spring的另外一个核心模块，提供对aop核心功能的支持，在Spring中，使用JDK的动态代理为基础，实现了一系列的AOP横切逻辑，
-    前置通知，后置通知，环绕通知，返回通知，异常通知等；
+spring-aop: Spring的另外一个核心模块，提供对aop核心功能的支持，在Spring中，使用JDK的动态代理为基础，实现了一系列的
+    AOP横切逻辑，前置通知，后置通知，环绕通知，返回通知，异常通知等；
 spring-aspects: 继承自AspectJ框架，为Spring的AOP提供另外一种实现方式；
 spring-instrument: 通过JVM级别的代理技术提供了用于某些应用程序服务器的类工具支持和类加载器的实现；
 ```
@@ -51,7 +51,8 @@ spring-test: 提供对UnitTest的支持，包括Mock功能及Test功能，可以
 
 ##### 其他支持模块
 ```
-spring-framework-bom: 用来统一管理Spring项目与其他应用整合时所使用的Spring版本；具体使用如下"spring-framework-bom使用"：
+spring-framework-bom: 用来统一管理Spring项目与其他应用整合时所使用的Spring版本；具体使用如下"spring-framework-bom
+    的使用"：
 spring-context-indexer: 在SpringFramework5.0引入了一个注解@Indexed ，它可以为
     Spring的模式注解添加索引，以提升应用启动性能。比如，使用了@Service或者@Repository
     模式注解标注的组件，如果在标注了@Indexed注解之后，在执行编译的时候，会自动在classpath
@@ -63,7 +64,8 @@ spring-context-indexer: 在SpringFramework5.0引入了一个注解@Indexed ，�
     那么同时引入这两个jar包之后，通过@ComponentScan扫描项目中的bean组件，没有标注@Indexed的
     组件将不会被扫描到）
 spring-context-support: 提供了spring容器对一些其他扩展功能的支持，例如: JavaMail，Cache，Scheduling等；
-spring-jcl: spring5.x之后通过"适配器设计模式"封装的一个通用的日志框架，对外提供一些简单易用的接口，将日志操作委托给具体的日志框架；
+spring-jcl: spring5.x之后通过"适配器设计模式"封装的一个通用的日志框架，对外提供一些简单易用的接口，将日志操作委托给具
+    体的日志框架；
 ```
 
 ##### spring-framework-bom使用
