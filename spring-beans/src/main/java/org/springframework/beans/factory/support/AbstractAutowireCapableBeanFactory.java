@@ -479,8 +479,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					beanName, "Validation of method overrides failed", ex);
 		}
 		try {
-			// 在真正创建Bean之前，执行bean实例化之前的一些工作。此处不会返回代理对象.因为此时对象还未创建出来.
-			// 会判断当前的bean是否需要被代理.
+			// 在真正创建Bean之前，执行bean实例化之前的一些工作，可以在此处生成自定义的代理对象.
+			// 通过实现InstantiationAwareBeanPostProcessor接口来进行自定义扩展，生成自定义的代理对象
+			//   可参考：【示例代码：com.wb.spring.instantiationaware.MyInstantiationAwareBeanPostProcessor】
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
 			if (bean != null) {
 				return bean;
@@ -1167,8 +1168,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * @see #instantiateBean
 	 */
 	protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd, @Nullable Object[] args) {
-		// Make sure bean class is actually resolved at this point.
-		// 解析Bean的类型
+		// 解析Bean的Class类型
 		Class<?> beanClass = resolveBeanClass(mbd, beanName);
 
 		// 如果Bean不是public，而且是不允许共有权限访问，直接抛出异常.
@@ -1179,8 +1179,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		/**
 		 * 通过指定的回调方法去创建bean实例，Spring5.0版本之后新增的方法。
-		 * 创建完成之后，会在初始化的时候指定bean的属性值转换器。即：ConversionService
+		 *  可以通过实现BeanFactoryPostProcessor接口来进行扩展，设置自定义的Supplier，通过自定义supplier实例化对象
 		 */
+		// 可参考：【示例代码：com.wb.spring.supplier.SupplierBeanFactoryPostProcessor】
 		Supplier<?> instanceSupplier = mbd.getInstanceSupplier();
 		if (instanceSupplier != null) {
 			return obtainFromSupplier(instanceSupplier, beanName);
@@ -1190,7 +1191,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		 * 如果当前bean指定了对应的工厂方法，则通过工厂方法去创建bean实例
 		 *   底层会获取工厂方法【静态工厂方法|实例化方法】--> 然后解析方法入参 --> 然后执行反射调用创建实例 --> 封装为包装对象返回.
 		 *
-		 *   TODO: 该方法的实现特别长 230行左右的代码。太刺激
+		 *   fixme: 该方法的实现特别长 230行左右的代码
 		 */
 		if (mbd.getFactoryMethodName() != null) {
 			return instantiateUsingFactoryMethod(beanName, mbd, args);
