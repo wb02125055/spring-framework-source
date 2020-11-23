@@ -539,7 +539,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			// TODO 里面调用的方法超级长
 			instanceWrapper = createBeanInstance(beanName, mbd, args);
 		}
-		// 获取新创建的bean对象和bean所对应的class类型
+		// 获取新创建的bean对象和对应的class
 		final Object bean = instanceWrapper.getWrappedInstance();
 		Class<?> beanType = instanceWrapper.getWrappedClass();
 
@@ -1194,6 +1194,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		 *   fixme: 该方法的实现特别长 230行左右的代码
 		 */
 		if (mbd.getFactoryMethodName() != null) {
+			// 通过工厂方法创建实例，可参考：【示例代码：com.wb.spring.factorymethod.InstanceFactoryMethod，com.wb.spring.factorymethod.StaticFactoryMethod】
 			return instantiateUsingFactoryMethod(beanName, mbd, args);
 		}
 
@@ -1204,15 +1205,15 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			synchronized (mbd.constructorArgumentLock) {
 				if (mbd.resolvedConstructorOrFactoryMethod != null) {
 					resolved = true;
-					/** 表示构造函数的参数是否已经解析妥当 */
+					// 表示构造函数的参数是否已经解析妥当
 					autowireNecessary = mbd.constructorArgumentsResolved;
 				}
 			}
 		}
 		if (resolved) {
-			/** 如果构造函数的参数已经解析妥当 */
+			// 如果构造函数的参数已经解析妥当
 			if (autowireNecessary) {
-				/** 则通过构造函数完成实例的创建 */
+				// 则通过构造函数完成实例的创建
 				return autowireConstructor(beanName, mbd, null, null);
 			}
 			else {

@@ -348,10 +348,14 @@ class ConstructorResolver {
 		BeanWrapperImpl bw = new BeanWrapperImpl();
 		this.beanFactory.initBeanWrapper(bw);
 
+		// 工厂对象
 		Object factoryBean;
+		// 工厂类
 		Class<?> factoryClass;
+		// 是否为静态工厂方法
 		boolean isStatic;
 
+		// 获取工厂bean名称，如果工厂bean名称不为空，表示以实例工厂的方式创建实例对象
 		String factoryBeanName = mbd.getFactoryBeanName();
 		if (factoryBeanName != null) {
 			if (factoryBeanName.equals(beanName)) {
@@ -363,6 +367,7 @@ class ConstructorResolver {
 				throw new ImplicitlyAppearedSingletonException();
 			}
 			factoryClass = factoryBean.getClass();
+			// 标识非静态的工厂方法
 			isStatic = false;
 		}
 		else {
@@ -373,6 +378,7 @@ class ConstructorResolver {
 			}
 			factoryBean = null;
 			factoryClass = mbd.getBeanClass();
+			// 标识为静态工厂方法
 			isStatic = true;
 		}
 
@@ -415,7 +421,8 @@ class ConstructorResolver {
 			// 如果只有一个候选的工厂方法
 			if (candidateList.size() == 1 && explicitArgs == null && !mbd.hasConstructorArgumentValues()) {
 				Method uniqueCandidate = candidateList.get(0);
-				if (uniqueCandidate.getParameterCount() == 0) { // 没有参数.
+				// 没有参数.
+				if (uniqueCandidate.getParameterCount() == 0) {
 					mbd.factoryMethodToIntrospect = uniqueCandidate;
 					synchronized (mbd.constructorArgumentLock) {
 						mbd.resolvedConstructorOrFactoryMethod = uniqueCandidate;
@@ -476,6 +483,7 @@ class ConstructorResolver {
 							if (pnd != null) {
 								paramNames = pnd.getParameterNames(candidate);
 							}
+							// 创建参数数组。因为在工厂方法中，可能存在着多个方法名和参数个数都一样但是参数类型不同的方法
 							argsHolder = createArgumentArray(beanName, mbd, resolvedValues, bw,
 									paramTypes, paramNames, candidate, autowiring, candidates.length == 1);
 						}
@@ -574,6 +582,7 @@ class ConstructorResolver {
 		}
 
 		Assert.state(argsToUse != null, "Unresolved factory method arguments");
+		// 通过反射创建具体的bean对象
 		bw.setBeanInstance(instantiate(beanName, mbd, factoryBean, factoryMethodToUse, argsToUse));
 		return bw;
 	}

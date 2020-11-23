@@ -661,9 +661,8 @@ public abstract class AbstractApplicationContext
 				// 清空单实例bean对应的map及缓存
 				destroyBeans();
 
-				// Reset 'active' flag.
+				// 设置容器的活跃状态为false
 				cancelRefresh(ex);
-
 				// Propagate exception to caller.
 				throw ex;
 			}

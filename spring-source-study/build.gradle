@@ -22,6 +22,10 @@ dependencies {
     optional(project(":spring-webflux"))
     optional(project(":spring-webmvc"))
     optional(project(":spring-websocket"))
+
+    // fastjson
+//    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.75'
+    optional("com.alibaba:fastjson:1.2.62")
     optional("c3p0:c3p0:0.9.1.2")
     optional("mysql:mysql-connector-java:5.1.44")
     optional("javax.activation:javax.activation-api:1.2.0")
@@ -41,8 +45,6 @@ dependencies {
     optional("org.elasticsearch:elasticsearch:6.3.2")
     optional("org.elasticsearch.client:transport:6.3.2")
     optional("org.elasticsearch.client:elasticsearch-rest-high-level-client:6.3.2")
-//    optional("org.mybatis:mybatis-spring:2.0.3")
-//    optional("org.mybatis:mybatis:3.5.2")
     optional("org.apache.taglibs:taglibs-standard-jstlel:1.2.5") {
         exclude group: "org.apache.taglibs", module: "taglibs-standard-spec"
     }
