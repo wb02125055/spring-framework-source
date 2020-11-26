@@ -1201,8 +1201,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Shortcut when re-creating the same bean...
 		boolean resolved = false;
 		boolean autowireNecessary = false;
+		// 原型(prototype)，多次获取的时候会走该分支
 		if (args == null) {
 			synchronized (mbd.constructorArgumentLock) {
+				// 因为一个类可能由多个构造函数，所以需要根据配置文件中配置的参数或传入的参数来确定最终调用的构造函数。
+				// 因为判断过程会比较，所以spring会将解析、确定好的构造函数缓存到BeanDefinition中的resolvedConstructorOrFactoryMethod字段中。
+				// 在下次创建相同时直接从RootBeanDefinition中的属性resolvedConstructorOrFactoryMethod缓存的值获取，避免再次解析
 				if (mbd.resolvedConstructorOrFactoryMethod != null) {
 					resolved = true;
 					// 表示构造函数的参数是否已经解析妥当
@@ -1217,10 +1221,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				return autowireConstructor(beanName, mbd, null, null);
 			}
 			else {
-				/**
-				 * 使用默认的bean对象创建策略进行bean对象的创建
-				 *   ***【此处使用了策略设计模式】***
-				 */
+				// 使用默认的bean对象创建策略进行bean对象的创建  ***【此处使用了策略设计模式】***
 				return instantiateBean(beanName, mbd);
 			}
 		}
